@@ -109,6 +109,8 @@ export interface Product {
   rating: number;
   reviewCount: number;
   tags: string[];
+  createdAt?: string;
+  updatedAt?: string;
   category?: Category;
   brand?: Brand;
   images: ProductImage[];
@@ -256,6 +258,8 @@ export interface Blog {
   publishedAt?: string;
   tags: string[];
   viewCount: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Page {

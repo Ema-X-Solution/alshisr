@@ -4,15 +4,21 @@ import { serverFetch } from '@/lib/api/server';
 import { localizedField, type Page } from '@/lib/types';
 import type { Locale } from '@/i18n/routing';
 
-interface CmsPageProps {
+interface CmsPageContentProps {
   params: Promise<{ locale: string }>;
   slug: string;
-  titleKey: string;
+  titleNamespace?: 'pages' | 'about';
+  titleKey?: string;
 }
 
-export async function CmsPageContent({ params, slug, titleKey }: CmsPageProps) {
+export async function CmsPageContent({
+  params,
+  slug,
+  titleNamespace = 'pages',
+  titleKey,
+}: CmsPageContentProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'pages' });
+  const t = await getTranslations({ locale, namespace: titleNamespace });
 
   let page: Page;
   try {
@@ -21,14 +27,12 @@ export async function CmsPageContent({ params, slug, titleKey }: CmsPageProps) {
     notFound();
   }
 
-  const title = localizedField(page, 'title', locale as Locale);
+  const title = localizedField(page, 'title', locale as Locale) || (titleKey ? t(titleKey) : '');
   const content = localizedField(page, 'content', locale as Locale);
 
   return (
     <div className="section-padding mx-auto max-w-4xl">
-      <h1 className="font-display mb-8 text-4xl font-bold text-primary">
-        {title || t(titleKey as 'privacy')}
-      </h1>
+      <h1 className="font-display mb-8 text-4xl font-bold text-primary">{title}</h1>
       <div
         className="prose prose-neutral max-w-none"
         dangerouslySetInnerHTML={{ __html: content }}
