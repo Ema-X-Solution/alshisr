@@ -81,10 +81,68 @@ For production, add SSL certificates to Nginx and update `nginx/conf.d/default.c
 ## Health Check
 
 ```bash
-curl http://localhost:4000/api/v1/health
+# Via Nginx (recommended)
+curl http://localhost/api/v1/health
+
+# Direct backend (debug only)
+curl http://127.0.0.1:4000/api/v1/health
 ```
 
 Expected response:
 ```json
 { "success": true, "data": { "status": "ok", "timestamp": "..." } }
+```
+
+## Troubleshooting (VPS)
+
+### `docker compose ps` shows no containers
+
+Containers were never started or the build failed:
+
+```bash
+cd /var/www/alshisr
+cp .env.example .env   # if missing
+nano .env              # set JWT_SECRET, POSTGRES_PASSWORD, domain URLs
+
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh
+```
+
+If build fails, inspect logs:
+
+```bash
+docker compose -f docker/docker-compose.yml logs --tail=100
+docker compose -f docker/docker-compose.yml up -d --build 2>&1 | tee deploy.log
+```
+
+### `curl https://domain` fails on port 443
+
+HTTPS does **not** work until SSL certificates are installed. Test HTTP first:
+
+```bash
+curl http://alshisr.com/api/v1/health
+curl http://$(curl -s ifconfig.me)/api/v1/health
+```
+
+Enable HTTPS after HTTP works:
+
+```bash
+sudo apt install certbot -y
+sudo certbot certonly --standalone -d alshisr.com -d www.alshisr.com -d admin.alshisr.com
+# Then uncomment port 443 in docker/docker-compose.yml and add SSL server block
+```
+
+### Check DNS points to this server
+
+```bash
+dig +short alshisr.com
+curl -s ifconfig.me   # should match DNS A record
+```
+
+### Check firewall
+
+```bash
+sudo ufw status
+sudo ufw allow 80/tcp
+# sudo ufw allow 443/tcp   # after SSL
 ```

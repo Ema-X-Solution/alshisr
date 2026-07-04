@@ -1,3 +1,6 @@
+# Production: copy ../.env and set JWT_SECRET, domain URLs, then:
+#   docker compose -f docker/docker-compose.yml up -d --build
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -5,10 +8,10 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: alshisr
-      POSTGRES_PASSWORD: alshisr_secret
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-alshisr_secret}
       POSTGRES_DB: alshisr
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -22,7 +25,7 @@ services:
     container_name: alshisr-redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -37,18 +40,20 @@ services:
       dockerfile: docker/Dockerfile.backend
     container_name: alshisr-backend
     restart: unless-stopped
+    env_file:
+      - ../.env
     ports:
-      - "4000:4000"
+      - "127.0.0.1:4000:4000"
     environment:
-      DATABASE_URL: postgresql://alshisr:alshisr_secret@postgres:5432/alshisr?schema=public
+      DATABASE_URL: postgresql://alshisr:${POSTGRES_PASSWORD:-alshisr_secret}@postgres:5432/alshisr?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       NODE_ENV: production
       API_PORT: 4000
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-in-production}
-      FRONTEND_URL: http://localhost:3000
-      DASHBOARD_URL: http://localhost:3001
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      DASHBOARD_URL: ${DASHBOARD_URL:-http://localhost:3001}
     depends_on:
       postgres:
         condition: service_healthy
@@ -59,13 +64,13 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost/api/v1}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost}
     container_name: alshisr-frontend
     restart: unless-stopped
     ports:
-      - "3000:3000"
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
-      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      - "127.0.0.1:3000:3000"
     depends_on:
       - backend
 
@@ -73,12 +78,12 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.dashboard
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost/api/v1}
     container_name: alshisr-dashboard
     restart: unless-stopped
     ports:
-      - "3001:3001"
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
+      - "127.0.0.1:3001:3001"
     depends_on:
       - backend
 
@@ -88,7 +93,8 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
+      # Enable 443 after SSL certificates are configured (see docs/DEPLOYMENT.md)
+      # - "443:443"
     volumes:
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../nginx/conf.d:/etc/nginx/conf.d:ro
