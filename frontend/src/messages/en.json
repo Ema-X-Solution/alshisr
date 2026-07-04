@@ -74,7 +74,9 @@
     "testimonials": "Customer Reviews",
     "instagram": "Follow Us on Instagram",
     "newsletter": "Join Our Family",
-    "newsletterText": "Get exclusive access to offers and new products"
+    "newsletterText": "Get exclusive access to offers and new products",
+    "emailPlaceholder": "Your email address",
+    "subscribe": "Subscribe"
   },
   "shop": {
     "title": "Shop",

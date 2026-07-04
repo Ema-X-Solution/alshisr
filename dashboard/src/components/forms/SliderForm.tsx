@@ -32,7 +32,7 @@ type FormData = z.infer<typeof schema>;
 
 interface SliderFormProps {
   slider?: Slider;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<unknown>;
 }
 
 export function SliderForm({ slider, onSubmit }: SliderFormProps) {

@@ -35,7 +35,7 @@ type FormData = z.infer<typeof schema>;
 
 interface BlogFormProps {
   blog?: Blog;
-  onSubmit: (data: Omit<FormData, 'tags'> & { tags?: string[] }) => Promise<void>;
+  onSubmit: (data: Omit<FormData, 'tags'> & { tags?: string[] }) => Promise<unknown>;
 }
 
 export function BlogForm({ blog, onSubmit }: BlogFormProps) {

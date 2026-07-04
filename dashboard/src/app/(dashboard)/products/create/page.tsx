@@ -1,3 +1,5 @@
+'use client';
+
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { ProductForm } from '@/components/forms/ProductForm';
 

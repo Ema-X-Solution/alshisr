@@ -1,3 +1,5 @@
+'use client';
+
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { BannerForm } from '@/components/forms/BannerForm';
 import { cmsApi } from '@/lib/services';

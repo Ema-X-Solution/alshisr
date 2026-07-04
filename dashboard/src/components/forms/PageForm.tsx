@@ -29,7 +29,7 @@ type FormData = z.infer<typeof schema>;
 
 interface PageFormProps {
   page?: Page;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<unknown>;
 }
 
 export function PageForm({ page, onSubmit }: PageFormProps) {

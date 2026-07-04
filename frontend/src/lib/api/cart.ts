@@ -2,7 +2,7 @@ import { apiClient, extractData } from './client';
 import type { Cart, CartItem } from '../types';
 
 export const cartApi = {
-  get: async () => {
+  get: async (): Promise<Cart> => {
     const response = await apiClient.get<Cart>('/cart');
     return extractData(response);
   },

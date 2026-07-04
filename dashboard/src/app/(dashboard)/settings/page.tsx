@@ -11,7 +11,6 @@ import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { PageLoader, LoadingSpinner } from '@/components/ui/loading';
 import { settingsApi } from '@/lib/services';
 import { useToast } from '@/hooks/use-toast';
-import type { SettingsGrouped } from '@/lib/types';
 
 const SETTING_GROUPS = [
   { key: 'general', label: 'General' },

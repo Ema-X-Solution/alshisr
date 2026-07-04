@@ -2,31 +2,36 @@ import { apiClient, extractData } from './client';
 import type {
   Banner,
   Blog,
+  Category,
+  CouponValidation,
   Faq,
+  Notification,
   Page,
   PaginatedResponse,
   Slider,
   Testimonial,
+  WishlistItem,
+  ShippingZone,
 } from '../types';
 
 export const cmsApi = {
-  getSliders: async () => {
+  getSliders: async (): Promise<Slider[]> => {
     const response = await apiClient.get<Slider[]>('/cms/sliders');
     return extractData(response);
   },
 
-  getBanners: async (position?: string) => {
+  getBanners: async (position?: string): Promise<Banner[]> => {
     const response = await apiClient.get<Banner[]>('/cms/banners', {
       params: position ? { position } : undefined,
     });
     return extractData(response);
   },
 
-  getBlogs: async (page = 1, limit = 12) => {
+  getBlogs: async (page = 1, limit = 12): Promise<PaginatedResponse<Blog>> => {
     const response = await apiClient.get<PaginatedResponse<Blog>>('/cms/blogs', {
       params: { page, limit },
     });
-    return extractData(response);
+    return extractData(response) as PaginatedResponse<Blog>;
   },
 
   getBlogBySlug: async (slug: string) => {
@@ -44,27 +49,27 @@ export const cmsApi = {
     return extractData(response);
   },
 
-  getFaqs: async (category?: string) => {
+  getFaqs: async (category?: string): Promise<Faq[]> => {
     const response = await apiClient.get<Faq[]>('/cms/faqs', {
       params: category ? { category } : undefined,
     });
     return extractData(response);
   },
 
-  getTestimonials: async () => {
+  getTestimonials: async (): Promise<Testimonial[]> => {
     const response = await apiClient.get<Testimonial[]>('/cms/testimonials');
     return extractData(response);
   },
 };
 
 export const categoriesApi = {
-  getAll: async () => {
-    const response = await apiClient.get('/categories');
+  getAll: async (): Promise<Category[]> => {
+    const response = await apiClient.get<Category[]>('/categories');
     return extractData(response);
   },
 
-  getBySlug: async (slug: string) => {
-    const response = await apiClient.get(`/categories/slug/${slug}`);
+  getBySlug: async (slug: string): Promise<Category> => {
+    const response = await apiClient.get<Category>(`/categories/slug/${slug}`);
     return extractData(response);
   },
 };
@@ -90,35 +95,37 @@ export const newsletterApi = {
 };
 
 export const settingsApi = {
-  getPublic: async () => {
+  getPublic: async (): Promise<Record<string, Record<string, unknown>>> => {
     const response = await apiClient.get<Record<string, Record<string, unknown>>>('/settings/public');
     return extractData(response);
   },
 };
 
 export const shippingApi = {
-  getZones: async () => {
-    const response = await apiClient.get('/shipping/zones');
+  getZones: async (): Promise<ShippingZone[]> => {
+    const response = await apiClient.get<ShippingZone[]>('/shipping/zones');
     return extractData(response);
   },
 
-  calculate: async (data: { zoneId: string; rateId?: string; subtotal?: number }) => {
-    const response = await apiClient.post('/shipping/calculate', data);
+  calculate: async (data: { zoneId: string; rateId?: string; subtotal?: number }): Promise<{ cost: number }> => {
+    const response = await apiClient.post<{ cost: number }>('/shipping/calculate', data);
     return extractData(response);
   },
 };
 
 export const couponsApi = {
-  validate: async (code: string, subtotal: number) => {
-    const response = await apiClient.post('/coupons/validate', { code, subtotal });
+  validate: async (code: string, subtotal: number): Promise<CouponValidation> => {
+    const response = await apiClient.post<CouponValidation>('/coupons/validate', { code, subtotal });
     return extractData(response);
   },
 };
 
 export const notificationsApi = {
-  getAll: async (page = 1, limit = 20) => {
-    const response = await apiClient.get('/notifications', { params: { page, limit } });
-    return extractData(response);
+  getAll: async (page = 1, limit = 20): Promise<PaginatedResponse<Notification>> => {
+    const response = await apiClient.get<PaginatedResponse<Notification>>('/notifications', {
+      params: { page, limit },
+    });
+    return extractData(response) as PaginatedResponse<Notification>;
   },
 
   markAsRead: async (id: string) => {
@@ -133,8 +140,8 @@ export const notificationsApi = {
 };
 
 export const wishlistApi = {
-  get: async () => {
-    const response = await apiClient.get('/wishlist');
+  get: async (): Promise<WishlistItem[]> => {
+    const response = await apiClient.get<WishlistItem[]>('/wishlist');
     return extractData(response);
   },
 

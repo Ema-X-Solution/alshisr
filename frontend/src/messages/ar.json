@@ -74,7 +74,9 @@
     "testimonials": "آراء عملائنا",
     "instagram": "تابعنا على إنستغرام",
     "newsletter": "انضم إلى عائلتنا",
-    "newsletterText": "احصل على وصول حصري للعروض والمنتجات الجديدة"
+    "newsletterText": "احصل على وصول حصري للعروض والمنتجات الجديدة",
+    "emailPlaceholder": "بريدك الإلكتروني",
+    "subscribe": "اشتراك"
   },
   "shop": {
     "title": "المتجر",

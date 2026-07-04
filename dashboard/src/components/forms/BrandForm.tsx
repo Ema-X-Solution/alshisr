@@ -30,7 +30,7 @@ type FormData = z.infer<typeof schema>;
 
 interface BrandFormProps {
   brand?: Brand;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<unknown>;
 }
 
 export function BrandForm({ brand, onSubmit }: BrandFormProps) {

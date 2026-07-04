@@ -28,7 +28,7 @@ type FormData = z.infer<typeof schema>;
 
 interface FaqFormProps {
   faq?: Faq;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<unknown>;
 }
 
 export function FaqForm({ faq, onSubmit }: FaqFormProps) {

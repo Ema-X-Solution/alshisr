@@ -15,12 +15,12 @@ export interface LoginData {
 }
 
 export const authApi = {
-  register: async (data: RegisterData) => {
+  register: async (data: RegisterData): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>('/auth/register', data);
     return extractData(response);
   },
 
-  login: async (data: LoginData) => {
+  login: async (data: LoginData): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>('/auth/login', data);
     return extractData(response);
   },
@@ -45,19 +45,19 @@ export const authApi = {
     return extractData(response);
   },
 
-  refresh: async (refreshToken: string) => {
+  refresh: async (refreshToken: string): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>('/auth/refresh', { refreshToken });
     return extractData(response);
   },
 };
 
 export const usersApi = {
-  getProfile: async () => {
+  getProfile: async (): Promise<User> => {
     const response = await apiClient.get<User>('/users/me');
     return extractData(response);
   },
 
-  updateProfile: async (data: Partial<User>) => {
+  updateProfile: async (data: Partial<User>): Promise<User> => {
     const response = await apiClient.patch<User>('/users/me', data);
     return extractData(response);
   },

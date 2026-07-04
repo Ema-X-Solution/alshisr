@@ -1,3 +1,5 @@
+'use client';
+
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { BrandForm } from '@/components/forms/BrandForm';
 import { brandsApi } from '@/lib/services';

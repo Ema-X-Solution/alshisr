@@ -27,7 +27,7 @@ export default function NotificationsPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['notifications'] }),
   });
 
-  const notifications = (data?.data as Notification[] | undefined) ?? data ?? [];
+  const notifications = data?.data ?? [];
 
   if (!isAuthenticated) {
     return (

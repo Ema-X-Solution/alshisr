@@ -9,8 +9,7 @@ export function useLocaleField() {
 
   return {
     locale,
-    field: <T extends Record<string, unknown>>(item: T, name: string) =>
-      localizedField(item, name, locale),
+    field: (item: object, name: string) => localizedField(item, name, locale),
     formatPrice: (amount: number) => formatPriceUtil(amount, locale),
     isRtl: locale === 'ar',
   };

@@ -30,7 +30,7 @@ type FormData = z.infer<typeof schema>;
 
 interface BannerFormProps {
   banner?: Banner;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<unknown>;
 }
 
 export function BannerForm({ banner, onSubmit }: BannerFormProps) {

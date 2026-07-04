@@ -349,16 +349,17 @@ export interface ProductFilters {
   sortOrder?: 'asc' | 'desc';
 }
 
-export function localizedField<T extends Record<string, unknown>>(
-  item: T,
+export function localizedField(
+  item: object,
   field: string,
   locale: Locale,
 ): string {
+  const record = item as Record<string, unknown>;
   const arField = `${field}Ar`;
-  if (locale === 'ar' && arField in item && item[arField]) {
-    return String(item[arField]);
+  if (locale === 'ar' && arField in record && record[arField]) {
+    return String(record[arField]);
   }
-  return String(item[field] ?? '');
+  return String(record[field] ?? '');
 }
 
 export function formatPrice(amount: number, locale: Locale = 'ar'): string {

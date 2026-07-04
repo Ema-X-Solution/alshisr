@@ -1,0 +1,52 @@
+module.exports = {
+  apps: [
+    {
+      name: 'alshisr-api',
+      cwd: './backend',
+      script: 'dist/main.js',
+      instances: 'max',
+      exec_mode: 'cluster',
+      env: {
+        NODE_ENV: 'production',
+        API_PORT: 4000,
+      },
+      max_memory_restart: '512M',
+      error_file: './logs/api-error.log',
+      out_file: './logs/api-out.log',
+      merge_logs: true,
+      time: true,
+    },
+    {
+      name: 'alshisr-frontend',
+      cwd: './frontend',
+      script: 'node_modules/next/dist/bin/next',
+      args: 'start -p 3000',
+      instances: 1,
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+      },
+      max_memory_restart: '512M',
+      error_file: './logs/frontend-error.log',
+      out_file: './logs/frontend-out.log',
+      merge_logs: true,
+      time: true,
+    },
+    {
+      name: 'alshisr-dashboard',
+      cwd: './dashboard',
+      script: 'node_modules/next/dist/bin/next',
+      args: 'start -p 3001',
+      instances: 1,
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3001,
+      },
+      max_memory_restart: '512M',
+      error_file: './logs/dashboard-error.log',
+      out_file: './logs/dashboard-out.log',
+      merge_logs: true,
+      time: true,
+    },
+  ],
+};

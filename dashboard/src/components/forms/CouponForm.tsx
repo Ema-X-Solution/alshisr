@@ -33,7 +33,7 @@ type FormData = z.infer<typeof schema>;
 
 interface CouponFormProps {
   coupon?: Coupon;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<unknown>;
 }
 
 export function CouponForm({ coupon, onSubmit }: CouponFormProps) {

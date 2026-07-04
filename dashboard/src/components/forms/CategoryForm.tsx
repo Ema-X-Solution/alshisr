@@ -34,7 +34,7 @@ type FormData = z.infer<typeof schema>;
 
 interface CategoryFormProps {
   category?: Category;
-  onSubmit: (data: FormData) => Promise<void>;
+  onSubmit: (data: FormData) => Promise<unknown>;
 }
 
 export function CategoryForm({ category, onSubmit }: CategoryFormProps) {

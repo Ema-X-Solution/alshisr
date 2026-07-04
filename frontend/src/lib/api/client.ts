@@ -101,10 +101,15 @@ apiClient.interceptors.response.use(
   },
 );
 
-export function extractData<T>(response: { data: { success?: boolean; data: T } | T }): T {
+export function extractData<T>(response: { data: unknown }): T {
   const payload = response.data;
-  if (payload && typeof payload === 'object' && 'data' in payload) {
-    return payload.data as T;
+  if (
+    payload &&
+    typeof payload === 'object' &&
+    'success' in payload &&
+    'data' in payload
+  ) {
+    return (payload as { data: T }).data;
   }
   return payload as T;
 }

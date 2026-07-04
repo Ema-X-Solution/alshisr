@@ -12,14 +12,14 @@ export interface CreateOrderData {
 }
 
 export const ordersApi = {
-  getAll: async (page = 1, limit = 10, status?: string) => {
+  getAll: async (page = 1, limit = 10, status?: string): Promise<PaginatedResponse<Order>> => {
     const response = await apiClient.get<PaginatedResponse<Order>>('/orders', {
       params: { page, limit, status },
     });
-    return extractData(response);
+    return extractData(response) as PaginatedResponse<Order>;
   },
 
-  getById: async (id: string) => {
+  getById: async (id: string): Promise<Order> => {
     const response = await apiClient.get<Order>(`/orders/${id}`);
     return extractData(response);
   },
@@ -29,7 +29,7 @@ export const ordersApi = {
     return extractData(response);
   },
 
-  create: async (data: CreateOrderData) => {
+  create: async (data: CreateOrderData): Promise<Order> => {
     const response = await apiClient.post<Order>('/orders', data);
     return extractData(response);
   },

@@ -1,3 +1,5 @@
+'use client';
+
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { UserForm } from '@/components/forms/UserForm';
 import { usersApi } from '@/lib/services';
