@@ -139,10 +139,48 @@ dig +short alshisr.com
 curl -s ifconfig.me   # should match DNS A record
 ```
 
-### Check firewall
+### Host nginx conflicts with Docker nginx
+
+If `curl` shows `nginx/1.24.0 (Ubuntu)` but Docker containers are empty, the **system nginx** is using port 80.
+
+Option A — use Docker nginx (recommended):
 
 ```bash
-sudo ufw status
-sudo ufw allow 80/tcp
-# sudo ufw allow 443/tcp   # after SSL
+sudo systemctl stop nginx
+sudo systemctl disable nginx
+docker compose -f docker/docker-compose.yml up -d
 ```
+
+Option B — keep system nginx and proxy to Docker:
+
+```nginx
+# /etc/nginx/sites-available/alshisr
+server {
+    listen 80;
+    server_name alshisr.com www.alshisr.com;
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header Host $host;
+    }
+}
+```
+
+Then expose backend/frontend ports on `127.0.0.1` only (already configured in docker-compose).
+
+### Docker build fails: `backend/node_modules not found`
+
+Monorepo hoists dependencies to root `node_modules`. Pull latest code and rebuild:
+
+```bash
+git pull
+docker compose -f docker/docker-compose.yml build --no-cache backend
+docker compose -f docker/docker-compose.yml up -d
+```
+

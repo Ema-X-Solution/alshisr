@@ -20,11 +20,16 @@ RUN npm run build
 FROM base AS runner
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nestjs
+
+WORKDIR /app
+
+# Monorepo: node_modules live at /app/node_modules (not /app/backend/node_modules)
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/packages/shared ./packages/shared
 COPY --from=builder /app/backend/dist ./dist
-COPY --from=builder /app/backend/node_modules ./node_modules
 COPY --from=builder /app/backend/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY backend/package.json ./
+COPY backend/package.json ./package.json
+
 USER nestjs
 EXPOSE 4000
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
