@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+# Run on VPS: bash scripts/fix-dockerfile-backend.sh
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+cat > docker/Dockerfile.backend << 'DOCKERFILE'
 FROM node:20-alpine AS base
 WORKDIR /app
 
@@ -32,3 +38,7 @@ COPY backend/package.json ./package.json
 USER nestjs
 EXPOSE 4000
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+DOCKERFILE
+
+echo "✅ docker/Dockerfile.backend fixed"
+wc -l docker/Dockerfile.backend
