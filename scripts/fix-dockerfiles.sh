@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+# Run on VPS: bash scripts/fix-dockerfiles.sh
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+cat > docker/Dockerfile.frontend << 'DOCKERFILE'
 FROM node:20-alpine AS base
 WORKDIR /app
 
@@ -19,7 +25,6 @@ COPY frontend ./frontend
 COPY package.json ./
 
 WORKDIR /app/frontend
-RUN mkdir -p public
 RUN npm run build
 
 FROM base AS runner
@@ -28,15 +33,16 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-# Monorepo standalone: server.js lives under frontend/ subdirectory
+COPY --from=builder /app/frontend/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/frontend/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/frontend/.next/static ./frontend/.next/static
-COPY --from=builder /app/frontend/public ./frontend/public
+COPY --from=builder --chown=nextjs:nodejs /app/frontend/.next/static ./.next/static
 
-WORKDIR /app/frontend
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]
+DOCKERFILE
+
+echo "✅ docker/Dockerfile.frontend fixed"
