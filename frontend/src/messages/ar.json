@@ -1,0 +1,282 @@
+{
+  "common": {
+    "siteName": "الشِصر",
+    "tagline": "الفخامة بأسلوب جديد",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "retry": "إعادة المحاولة",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "viewAll": "عرض الكل",
+    "readMore": "اقرأ المزيد",
+    "shopNow": "تسوق الآن",
+    "learnMore": "اعرف المزيد",
+    "back": "رجوع",
+    "search": "بحث",
+    "searchPlaceholder": "ابحث عن منتجات...",
+    "noResults": "لا توجد نتائج",
+    "currency": "ر.س",
+    "home": "الرئيسية",
+    "required": "مطلوب",
+    "optional": "اختياري",
+    "success": "تم بنجاح",
+    "close": "إغلاق"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "shop": "المتجر",
+    "categories": "التصنيفات",
+    "offers": "العروض",
+    "about": "من نحن",
+    "blog": "المدونة",
+    "contact": "اتصل بنا",
+    "faq": "الأسئلة الشائعة",
+    "account": "حسابي",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "logout": "تسجيل الخروج",
+    "profile": "الملف الشخصي",
+    "orders": "طلباتي",
+    "wishlist": "المفضلة",
+    "cart": "السلة",
+    "notifications": "الإشعارات",
+    "language": "اللغة"
+  },
+  "footer": {
+    "about": "عن الشِصر",
+    "aboutText": "الشِصر تمثل قمة الفخامة العربية، حيث يلتقي التراث الأصيل بالأناقة العصرية.",
+    "quickLinks": "روابط سريعة",
+    "customerService": "خدمة العملاء",
+    "contactUs": "تواصل معنا",
+    "newsletter": "النشرة البريدية",
+    "newsletterText": "اشترك للحصول على أحدث العروض والمنتجات الحصرية",
+    "subscribe": "اشتراك",
+    "emailPlaceholder": "بريدك الإلكتروني",
+    "privacyPolicy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "refundPolicy": "سياسة الإرجاع",
+    "shippingPolicy": "سياسة الشحن",
+    "copyright": "© {year} الشِصر. جميع الحقوق محفوظة."
+  },
+  "home": {
+    "hero": {
+      "title": "الفخامة بأسلوب جديد",
+      "subtitle": "اكتشف مجموعتنا الحصرية من المنتجات الفاخرة"
+    },
+    "bestSellers": "الأكثر مبيعاً",
+    "featured": "منتجات مميزة",
+    "categories": "تصفح التصنيفات",
+    "offers": "عروض خاصة",
+    "aboutBrand": "عن العلامة",
+    "aboutBrandText": "الشِصر تمثل قمة الفخامة العربية، حيث يلتقي التراث الأصيل بالأناقة العصرية في كل قطعة نقدمها.",
+    "testimonials": "آراء عملائنا",
+    "instagram": "تابعنا على إنستغرام",
+    "newsletter": "انضم إلى عائلتنا",
+    "newsletterText": "احصل على وصول حصري للعروض والمنتجات الجديدة"
+  },
+  "shop": {
+    "title": "المتجر",
+    "filters": "التصفية",
+    "sortBy": "ترتيب حسب",
+    "priceRange": "نطاق السعر",
+    "category": "التصنيف",
+    "brand": "العلامة التجارية",
+    "clearFilters": "مسح التصفية",
+    "productsFound": "{count} منتج",
+    "noProducts": "لا توجد منتجات",
+    "sortOptions": {
+      "newest": "الأحدث",
+      "priceAsc": "السعر: من الأقل",
+      "priceDesc": "السعر: من الأعلى",
+      "popular": "الأكثر شعبية",
+      "rating": "التقييم"
+    }
+  },
+  "product": {
+    "addToCart": "أضف إلى السلة",
+    "buyNow": "اشتري الآن",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "quantity": "الكمية",
+    "description": "الوصف",
+    "specifications": "المواصفات",
+    "reviews": "التقييمات",
+    "relatedProducts": "منتجات ذات صلة",
+    "sku": "رمز المنتج",
+    "selectVariant": "اختر الخيار",
+    "addToWishlist": "أضف للمفضلة",
+    "removeFromWishlist": "إزالة من المفضلة",
+    "writeReview": "اكتب تقييماً",
+    "noReviews": "لا توجد تقييمات بعد",
+    "discount": "خصم {percent}%"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "empty": "سلتك فارغة",
+    "emptyText": "ابدأ التسوق لإضافة منتجات إلى سلتك",
+    "continueShopping": "متابعة التسوق",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "discount": "الخصم",
+    "total": "الإجمالي",
+    "checkout": "إتمام الشراء",
+    "remove": "إزالة",
+    "updateQuantity": "تحديث الكمية",
+    "addedToCart": "تمت الإضافة إلى السلة",
+    "removedFromCart": "تمت الإزالة من السلة",
+    "itemCount": "{count} منتج"
+  },
+  "checkout": {
+    "title": "إتمام الشراء",
+    "shippingAddress": "عنوان الشحن",
+    "billingAddress": "عنوان الفوترة",
+    "sameAsShipping": "نفس عنوان الشحن",
+    "paymentMethod": "طريقة الدفع",
+    "orderSummary": "ملخص الطلب",
+    "placeOrder": "تأكيد الطلب",
+    "couponCode": "رمز الخصم",
+    "applyCoupon": "تطبيق",
+    "notes": "ملاحظات",
+    "notesPlaceholder": "ملاحظات إضافية للطلب",
+    "paymentMethods": {
+      "COD": "الدفع عند الاستلام",
+      "STRIPE": "بطاقة ائتمان",
+      "MYFATOORAH": "ماي فاتورة"
+    },
+    "success": "تم إنشاء طلبك بنجاح",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "phone": "رقم الهاتف",
+    "addressLine1": "العنوان",
+    "addressLine2": "العنوان الإضافي",
+    "city": "المدينة",
+    "state": "المنطقة",
+    "country": "الدولة",
+    "postalCode": "الرمز البريدي"
+  },
+  "wishlist": {
+    "title": "المفضلة",
+    "empty": "قائمة المفضلة فارغة",
+    "emptyText": "احفظ منتجاتك المفضلة هنا",
+    "added": "تمت الإضافة إلى المفضلة",
+    "removed": "تمت الإزالة من المفضلة",
+    "moveToCart": "نقل إلى السلة"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "forgotPassword": "نسيت كلمة المرور",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "verifyEmail": "تأكيد البريد الإلكتروني",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "phone": "رقم الهاتف",
+    "rememberMe": "تذكرني",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "loginSuccess": "تم تسجيل الدخول بنجاح",
+    "registerSuccess": "تم إنشاء الحساب بنجاح",
+    "forgotSuccess": "تم إرسال رابط إعادة التعيين",
+    "resetSuccess": "تم إعادة تعيين كلمة المرور",
+    "verifySuccess": "تم تأكيد بريدك الإلكتروني",
+    "verifyError": "فشل تأكيد البريد الإلكتروني",
+    "sendResetLink": "إرسال رابط إعادة التعيين",
+    "newPassword": "كلمة المرور الجديدة"
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "personalInfo": "المعلومات الشخصية",
+    "addresses": "العناوين",
+    "changePassword": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "updateSuccess": "تم تحديث الملف الشخصي"
+  },
+  "orders": {
+    "title": "طلباتي",
+    "empty": "لا توجد طلبات",
+    "orderNumber": "رقم الطلب",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "total": "الإجمالي",
+    "viewDetails": "عرض التفاصيل",
+    "timeline": "مسار الطلب",
+    "items": "المنتجات",
+    "trackingNumber": "رقم التتبع",
+    "statuses": {
+      "PENDING": "قيد الانتظار",
+      "PROCESSING": "قيد المعالجة",
+      "SHIPPING": "قيد الشحن",
+      "DELIVERED": "تم التسليم",
+      "CANCELLED": "ملغي",
+      "REFUNDED": "مسترد"
+    }
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "empty": "لا توجد إشعارات",
+    "markAllRead": "تحديد الكل كمقروء"
+  },
+  "search": {
+    "title": "نتائج البحث",
+    "placeholder": "ابحث عن منتجات...",
+    "resultsFor": "نتائج البحث عن \"{query}\"",
+    "noResults": "لم يتم العثور على نتائج"
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "subtitle": "نحن هنا لمساعدتك",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "subject": "الموضوع",
+    "message": "الرسالة",
+    "send": "إرسال",
+    "success": "تم إرسال رسالتك بنجاح"
+  },
+  "blog": {
+    "title": "المدونة",
+    "readMore": "اقرأ المزيد",
+    "publishedAt": "نُشر في",
+    "author": "بواسطة",
+    "tags": "الوسوم"
+  },
+  "faq": {
+    "title": "الأسئلة الشائعة",
+    "subtitle": "إجابات على الأسئلة الأكثر شيوعاً"
+  },
+  "offers": {
+    "title": "العروض الخاصة",
+    "subtitle": "اكتشف أفضل العروض والخصومات"
+  },
+  "categories": {
+    "title": "التصنيفات",
+    "productsCount": "{count} منتج"
+  },
+  "about": {
+    "title": "من نحن"
+  },
+  "pages": {
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "refundPolicy": "سياسة الإرجاع",
+    "shippingPolicy": "سياسة الشحن"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "email": "يرجى إدخال بريد إلكتروني صحيح",
+    "minLength": "يجب أن يكون {min} أحرف على الأقل",
+    "passwordMatch": "كلمات المرور غير متطابقة"
+  },
+  "seo": {
+    "homeTitle": "الشِصر | الفخامة بأسلوب جديد",
+    "homeDescription": "اكتشف مجموعة الشِصر الحصرية من المنتجات الفاخرة العربية",
+    "shopTitle": "المتجر | الشِصر",
+    "shopDescription": "تسوق أ finest luxury products from AL SHISR"
+  }
+}

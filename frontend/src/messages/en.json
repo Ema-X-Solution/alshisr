@@ -1,0 +1,282 @@
+{
+  "common": {
+    "siteName": "AL SHISR",
+    "tagline": "Luxury Redefined",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "viewAll": "View All",
+    "readMore": "Read More",
+    "shopNow": "Shop Now",
+    "learnMore": "Learn More",
+    "back": "Back",
+    "search": "Search",
+    "searchPlaceholder": "Search products...",
+    "noResults": "No results found",
+    "currency": "SAR",
+    "home": "Home",
+    "required": "Required",
+    "optional": "Optional",
+    "success": "Success",
+    "close": "Close"
+  },
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "categories": "Categories",
+    "offers": "Offers",
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "account": "Account",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "orders": "Orders",
+    "wishlist": "Wishlist",
+    "cart": "Cart",
+    "notifications": "Notifications",
+    "language": "Language"
+  },
+  "footer": {
+    "about": "About AL SHISR",
+    "aboutText": "AL SHISR represents the pinnacle of Arabian luxury, where authentic heritage meets modern elegance.",
+    "quickLinks": "Quick Links",
+    "customerService": "Customer Service",
+    "contactUs": "Contact Us",
+    "newsletter": "Newsletter",
+    "newsletterText": "Subscribe for exclusive offers and new arrivals",
+    "subscribe": "Subscribe",
+    "emailPlaceholder": "Your email address",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "refundPolicy": "Refund Policy",
+    "shippingPolicy": "Shipping Policy",
+    "copyright": "© {year} AL SHISR. All rights reserved."
+  },
+  "home": {
+    "hero": {
+      "title": "Luxury Redefined",
+      "subtitle": "Discover our exclusive collection of luxury products"
+    },
+    "bestSellers": "Best Sellers",
+    "featured": "Featured Products",
+    "categories": "Browse Categories",
+    "offers": "Special Offers",
+    "aboutBrand": "About the Brand",
+    "aboutBrandText": "AL SHISR represents the pinnacle of Arabian luxury, where authentic heritage meets modern elegance in every piece we offer.",
+    "testimonials": "Customer Reviews",
+    "instagram": "Follow Us on Instagram",
+    "newsletter": "Join Our Family",
+    "newsletterText": "Get exclusive access to offers and new products"
+  },
+  "shop": {
+    "title": "Shop",
+    "filters": "Filters",
+    "sortBy": "Sort By",
+    "priceRange": "Price Range",
+    "category": "Category",
+    "brand": "Brand",
+    "clearFilters": "Clear Filters",
+    "productsFound": "{count} products",
+    "noProducts": "No products found",
+    "sortOptions": {
+      "newest": "Newest",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low",
+      "popular": "Most Popular",
+      "rating": "Rating"
+    }
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "quantity": "Quantity",
+    "description": "Description",
+    "specifications": "Specifications",
+    "reviews": "Reviews",
+    "relatedProducts": "Related Products",
+    "sku": "SKU",
+    "selectVariant": "Select Option",
+    "addToWishlist": "Add to Wishlist",
+    "removeFromWishlist": "Remove from Wishlist",
+    "writeReview": "Write a Review",
+    "noReviews": "No reviews yet",
+    "discount": "{percent}% OFF"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "emptyText": "Start shopping to add products to your cart",
+    "continueShopping": "Continue Shopping",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "discount": "Discount",
+    "total": "Total",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "updateQuantity": "Update Quantity",
+    "addedToCart": "Added to cart",
+    "removedFromCart": "Removed from cart",
+    "itemCount": "{count} items"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "shippingAddress": "Shipping Address",
+    "billingAddress": "Billing Address",
+    "sameAsShipping": "Same as shipping address",
+    "paymentMethod": "Payment Method",
+    "orderSummary": "Order Summary",
+    "placeOrder": "Place Order",
+    "couponCode": "Coupon Code",
+    "applyCoupon": "Apply",
+    "notes": "Notes",
+    "notesPlaceholder": "Additional order notes",
+    "paymentMethods": {
+      "COD": "Cash on Delivery",
+      "STRIPE": "Credit Card",
+      "MYFATOORAH": "MyFatoorah"
+    },
+    "success": "Your order has been placed successfully",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "addressLine1": "Address",
+    "addressLine2": "Address Line 2",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "postalCode": "Postal Code"
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "empty": "Your wishlist is empty",
+    "emptyText": "Save your favorite products here",
+    "added": "Added to wishlist",
+    "removed": "Removed from wishlist",
+    "moveToCart": "Move to Cart"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password",
+    "verifyEmail": "Verify Email",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "rememberMe": "Remember me",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "loginSuccess": "Logged in successfully",
+    "registerSuccess": "Account created successfully",
+    "forgotSuccess": "Reset link sent to your email",
+    "resetSuccess": "Password reset successfully",
+    "verifySuccess": "Email verified successfully",
+    "verifyError": "Email verification failed",
+    "sendResetLink": "Send Reset Link",
+    "newPassword": "New Password"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "addresses": "Addresses",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "updateSuccess": "Profile updated successfully"
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "No orders yet",
+    "orderNumber": "Order Number",
+    "status": "Status",
+    "date": "Date",
+    "total": "Total",
+    "viewDetails": "View Details",
+    "timeline": "Order Timeline",
+    "items": "Items",
+    "trackingNumber": "Tracking Number",
+    "statuses": {
+      "PENDING": "Pending",
+      "PROCESSING": "Processing",
+      "SHIPPING": "Shipping",
+      "DELIVERED": "Delivered",
+      "CANCELLED": "Cancelled",
+      "REFUNDED": "Refunded"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "markAllRead": "Mark all as read"
+  },
+  "search": {
+    "title": "Search Results",
+    "placeholder": "Search products...",
+    "resultsFor": "Results for \"{query}\"",
+    "noResults": "No results found"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send",
+    "success": "Your message has been sent successfully"
+  },
+  "blog": {
+    "title": "Blog",
+    "readMore": "Read More",
+    "publishedAt": "Published on",
+    "author": "By",
+    "tags": "Tags"
+  },
+  "faq": {
+    "title": "FAQ",
+    "subtitle": "Answers to frequently asked questions"
+  },
+  "offers": {
+    "title": "Special Offers",
+    "subtitle": "Discover the best deals and discounts"
+  },
+  "categories": {
+    "title": "Categories",
+    "productsCount": "{count} products"
+  },
+  "about": {
+    "title": "About Us"
+  },
+  "pages": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "refundPolicy": "Refund Policy",
+    "shippingPolicy": "Shipping Policy"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email",
+    "minLength": "Must be at least {min} characters",
+    "passwordMatch": "Passwords do not match"
+  },
+  "seo": {
+    "homeTitle": "AL SHISR | Luxury Redefined",
+    "homeDescription": "Discover AL SHISR exclusive collection of Arabian luxury products",
+    "shopTitle": "Shop | AL SHISR",
+    "shopDescription": "Shop the finest luxury products from AL SHISR"
+  }
+}
