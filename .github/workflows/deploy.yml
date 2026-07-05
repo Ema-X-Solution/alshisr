@@ -20,6 +20,9 @@ jobs:
       - name: Start / recreate containers
         run: docker compose -f docker/docker-compose.yml up -d
 
+      - name: Restart nginx to pick up new container IPs
+        run: docker compose -f docker/docker-compose.yml restart nginx
+
       - name: Wait for containers to settle
         run: sleep 20
 
