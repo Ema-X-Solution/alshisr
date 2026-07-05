@@ -1,0 +1,64 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v4
+
+      - name: Build all services
+        run: docker compose -f docker/docker-compose.yml build
+
+      - name: Start / recreate containers
+        run: docker compose -f docker/docker-compose.yml up -d
+
+      - name: Wait for containers to settle
+        run: sleep 15
+
+      - name: Health check - backend
+        run: |
+          for i in {1..10}; do
+            if curl -sf http://127.0.0.1:4000/health > /dev/null 2>&1 || curl -sf http://127.0.0.1:4000/ > /dev/null 2>&1; then
+              echo "Backend is up"
+              exit 0
+            fi
+            echo "Waiting for backend... ($i/10)"
+            sleep 5
+          done
+          echo "Backend health check failed"
+          exit 1
+
+      - name: Health check - frontend
+        run: |
+          for i in {1..10}; do
+            if curl -sf http://127.0.0.1:3000/ > /dev/null 2>&1; then
+              echo "Frontend is up"
+              exit 0
+            fi
+            echo "Waiting for frontend... ($i/10)"
+            sleep 5
+          done
+          echo "Frontend health check failed"
+          exit 1
+
+      - name: Health check - dashboard
+        run: |
+          for i in {1..10}; do
+            if curl -sf http://127.0.0.1:3001/ > /dev/null 2>&1; then
+              echo "Dashboard is up"
+              exit 0
+            fi
+            echo "Waiting for dashboard... ($i/10)"
+            sleep 5
+          done
+          echo "Dashboard health check failed"
+          exit 1
+
+      - name: Clean up old images
+        if: always()
+        run: docker image prune -f
