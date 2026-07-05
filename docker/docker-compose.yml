@@ -5,10 +5,10 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: alshisr
-      POSTGRES_PASSWORD: alshisr_secret
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-alshisr_secret}
       POSTGRES_DB: alshisr
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -22,7 +22,7 @@ services:
     container_name: alshisr-redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -37,10 +37,12 @@ services:
       dockerfile: docker/Dockerfile.backend
     container_name: alshisr-backend
     restart: unless-stopped
+    env_file:
+      - ../.env
     ports:
-      - "4000:4000"
+      - "127.0.0.1:4000:4000"
     environment:
-      DATABASE_URL: postgresql://alshisr:alshisr_secret@postgres:5432/alshisr?schema=public
+      DATABASE_URL: postgresql://alshisr:${POSTGRES_PASSWORD:-alshisr_secret}@postgres:5432/alshisr?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
       NODE_ENV: production
@@ -65,7 +67,7 @@ services:
     container_name: alshisr-frontend
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     environment:
       NEXT_PUBLIC_API_URL: https://alshisr.com
       NEXT_PUBLIC_SITE_URL: https://alshisr.com
@@ -81,7 +83,7 @@ services:
     container_name: alshisr-dashboard
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "127.0.0.1:3001:3001"
     environment:
       NEXT_PUBLIC_API_URL: https://alshisr.com/api/v1
     depends_on:

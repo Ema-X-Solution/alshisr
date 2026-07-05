@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+# Run on VPS: bash scripts/fix-dockerfile-backend.sh
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+cat > docker/Dockerfile.backend << 'DOCKERFILE'
 FROM node:20-alpine AS base
 WORKDIR /app
 
@@ -28,9 +34,11 @@ COPY --from=builder /app/packages/shared ./packages/shared
 COPY --from=builder /app/backend/dist ./dist
 COPY --from=builder /app/backend/prisma ./prisma
 COPY backend/package.json ./package.json
-COPY docker/entrypoint-backend.sh ./entrypoint.sh
-RUN chmod +x ./entrypoint.sh && chown -R nestjs:nodejs /app
 
 USER nestjs
 EXPOSE 4000
-CMD ["./entrypoint.sh"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+DOCKERFILE
+
+echo "✅ docker/Dockerfile.backend fixed"
+wc -l docker/Dockerfile.backend

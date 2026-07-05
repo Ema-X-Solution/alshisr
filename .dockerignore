@@ -1,0 +1,10 @@
+node_modules
+.next
+dist
+.git
+.env
+.env.local
+*.log
+coverage
+.pm2
+docker/data
