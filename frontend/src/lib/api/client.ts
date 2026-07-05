@@ -1,6 +1,7 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { getApiBaseUrl } from '@alshisr/shared';
 
-const API_BASE = `${process.env.NEXT_PUBLIC_API_URL || 'https://alshisr.com'}/api/v1`;
+const API_BASE = getApiBaseUrl(process.env.NEXT_PUBLIC_API_URL);
 
 export const apiClient = axios.create({
   baseURL: API_BASE,

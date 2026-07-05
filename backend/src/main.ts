@@ -16,13 +16,24 @@ async function bootstrap() {
   app.use(helmet());
   app.use(compression());
 
+  const corsOrigins = new Set<string>([
+    configService.get('FRONTEND_URL', 'http://localhost:3000'),
+    configService.get('DASHBOARD_URL', 'http://localhost:3001'),
+    'https://alshisr.com',
+    'https://www.alshisr.com',
+    'https://admin.alshisr.com',
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ]);
+
+  const extraOrigins = configService.get<string>('CORS_ORIGINS', '');
+  for (const origin of extraOrigins.split(',')) {
+    const trimmed = origin.trim();
+    if (trimmed) corsOrigins.add(trimmed);
+  }
+
   app.enableCors({
-    origin: [
-      configService.get('FRONTEND_URL', 'http://localhost:3000'),
-      configService.get('DASHBOARD_URL', 'http://localhost:3001'),
-      'http://localhost:3000',
-      'http://localhost:3001',
-    ],
+    origin: [...corsOrigins],
     credentials: true,
   });
 

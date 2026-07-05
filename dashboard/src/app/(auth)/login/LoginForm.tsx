@@ -31,7 +31,7 @@ export default function LoginForm() {
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: 'admin@alshisr.com', password: 'Admin@123456' },
+    defaultValues: { email: '', password: '' },
   });
 
   const onSubmit = async (data: LoginFormData) => {
@@ -66,7 +66,7 @@ export default function LoginForm() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="admin@alshisr.com" {...register('email')} />
+              <Input id="email" type="email" placeholder="" {...register('email')} />
               {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">

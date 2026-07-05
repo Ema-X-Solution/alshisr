@@ -20,6 +20,7 @@ export function BrandLogo({
       height={height}
       className={className}
       priority={priority}
+      unoptimized
     />
   );
 }
