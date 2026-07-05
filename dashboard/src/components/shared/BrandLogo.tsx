@@ -13,14 +13,13 @@ export function BrandLogo({
   priority = false,
 }: BrandLogoProps) {
   return (
-    <Image
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       src={BRAND_ASSETS.logo}
       alt={BRAND.name}
-      width={Math.round(height * 3)}
-      height={height}
       className={className}
-      priority={priority}
-      unoptimized
+      height={height}
+      fetchPriority={priority ? 'high' : undefined}
     />
   );
 }

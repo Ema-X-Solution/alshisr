@@ -86,13 +86,13 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.dashboard
       args:
-        NEXT_PUBLIC_API_URL: https://admin.alshisr.com
+        NEXT_PUBLIC_API_URL: https://alshisr.com
     container_name: alshisr-dashboard
     restart: unless-stopped
     ports:
       - "127.0.0.1:3001:3001"
     environment:
-      NEXT_PUBLIC_API_URL: https://admin.alshisr.com
+      NEXT_PUBLIC_API_URL: https://alshisr.com
     depends_on:
       backend:
         condition: service_healthy

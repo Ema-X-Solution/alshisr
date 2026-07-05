@@ -18,7 +18,7 @@ RUN npm run build --workspace=@alshisr/shared
 RUN node scripts/sync-brand-assets.mjs
 WORKDIR /app/dashboard
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG NEXT_PUBLIC_API_URL=https://admin.alshisr.com
+ARG NEXT_PUBLIC_API_URL=https://alshisr.com
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 RUN mkdir -p public
 RUN npm run build

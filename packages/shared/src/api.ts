@@ -1,4 +1,4 @@
-const DEFAULT_API_ORIGIN = 'http://localhost:4000';
+const DEFAULT_API_ORIGIN = 'https://alshisr.com';
 
 /** Normalize env API URL to `…/api/v1` (handles values with or without the suffix). */
 export function getApiBaseUrl(envUrl?: string): string {
