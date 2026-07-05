@@ -20,6 +20,8 @@ async function bootstrap() {
     origin: [
       configService.get('FRONTEND_URL', 'http://localhost:3000'),
       configService.get('DASHBOARD_URL', 'http://localhost:3001'),
+      'http://localhost:3000',
+      'http://localhost:3001',
     ],
     credentials: true,
   });
