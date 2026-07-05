@@ -48,3 +48,11 @@ docker/data/
 
 # TypeScript
 *.tsbuildinfo
+
+# Brand assets synced from packages/brand-assets (run npm run sync:brand)
+frontend/public/logo_alshisr.png
+frontend/public/favicon.ico
+frontend/public/favicons/
+dashboard/public/logo_alshisr.png
+dashboard/public/favicon.ico
+dashboard/public/favicons/

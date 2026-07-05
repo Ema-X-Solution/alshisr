@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { BRAND } from '@alshisr/shared';
 import { cn } from '@/lib/utils';
+import { BrandLogo } from '@/components/shared/BrandLogo';
 import {
   HiOutlineHome,
   HiOutlineShoppingBag,
@@ -67,11 +69,9 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       >
         <div className="flex h-16 items-center border-b px-6">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground font-bold text-sm">
-              AS
-            </div>
+            <BrandLogo priority />
             <div>
-              <p className="font-semibold text-sm leading-tight">AL SHISR</p>
+              <p className="font-semibold text-sm leading-tight">{BRAND.name}</p>
               <p className="text-xs text-muted-foreground">Admin Panel</p>
             </div>
           </Link>

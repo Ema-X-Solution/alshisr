@@ -10,6 +10,8 @@
     "dashboard"
   ],
   "scripts": {
+    "sync:brand": "node scripts/sync-brand-assets.mjs",
+    "postinstall": "node scripts/sync-brand-assets.mjs",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:dashboard\"",
     "dev:backend": "npm run start:dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend",

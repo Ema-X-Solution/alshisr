@@ -19,6 +19,7 @@ import { useCart } from '@/lib/hooks/useCart';
 import { useWishlist } from '@/lib/hooks/useWishlist';
 import { cn } from '@/lib/utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BrandLogo } from '@/components/shared/BrandLogo';
 
 const navLinks = [
   { href: '/', labelKey: 'home' },
@@ -59,8 +60,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:h-20 md:px-8">
-        <Link href="/" className="font-display text-2xl font-bold tracking-wide text-primary md:text-3xl">
-          {locale === 'ar' ? 'الشِصر' : 'AL SHISR'}
+        <Link href="/" className="shrink-0">
+          <BrandLogo locale={locale as 'ar' | 'en'} priority />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">

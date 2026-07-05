@@ -2,7 +2,7 @@ import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { getAccessToken, getRefreshToken, setAuth, clearAuth, getStoredUser } from './auth';
 import type { ApiResponse, LoginResponse } from './types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://alshisr.com/api/v1';
 
 export const api = axios.create({
   baseURL: API_URL,

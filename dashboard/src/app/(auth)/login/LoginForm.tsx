@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { BrandLogo } from '@/components/shared/BrandLogo';
 import { authApi } from '@/lib/services';
+import { BRAND } from '@alshisr/shared';
 import { setAuth, isAdminRole } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 import { LoadingSpinner } from '@/components/ui/loading';
@@ -54,10 +56,10 @@ export default function LoginForm() {
     <div className="flex min-h-screen items-center justify-center bg-brand-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary text-primary-foreground text-xl font-bold">
-            AS
+          <div className="mx-auto mb-4">
+            <BrandLogo className="mx-auto h-14 w-auto" height={56} priority />
           </div>
-          <CardTitle className="text-2xl">AL SHISR</CardTitle>
+          <CardTitle className="text-2xl">{BRAND.name}</CardTitle>
           <CardDescription>Admin Dashboard — Sign in to continue</CardDescription>
         </CardHeader>
         <CardContent>

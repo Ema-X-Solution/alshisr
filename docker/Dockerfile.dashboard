@@ -10,9 +10,12 @@ RUN npm ci --workspace=dashboard --workspace=@alshisr/shared --include=dev
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY packages/shared ./packages/shared
+COPY packages/brand-assets ./packages/brand-assets
 COPY dashboard ./dashboard
+COPY scripts/sync-brand-assets.mjs ./scripts/sync-brand-assets.mjs
 COPY package.json ./
 RUN npm run build --workspace=@alshisr/shared
+RUN node scripts/sync-brand-assets.mjs
 WORKDIR /app/dashboard
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG NEXT_PUBLIC_API_URL=https://alshisr.com/api/v1

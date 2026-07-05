@@ -3,8 +3,9 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json package-lock.json* ./
+COPY packages/shared/package.json ./packages/shared/
 COPY frontend/package.json ./frontend/
-RUN npm ci --workspace=frontend --include=dev
+RUN npm ci --workspace=frontend --workspace=@alshisr/shared --include=dev
 
 FROM base AS builder
 ARG NEXT_PUBLIC_API_URL=https://alshisr.com
@@ -15,8 +16,13 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/frontend/node_modules ./frontend/node_modules
+COPY packages/shared ./packages/shared
+COPY packages/brand-assets ./packages/brand-assets
 COPY frontend ./frontend
+COPY scripts/sync-brand-assets.mjs ./scripts/sync-brand-assets.mjs
 COPY package.json ./
+RUN npm run build --workspace=@alshisr/shared
+RUN node scripts/sync-brand-assets.mjs
 
 WORKDIR /app/frontend
 RUN mkdir -p public
