@@ -5,7 +5,7 @@ FROM base AS deps
 COPY package.json package-lock.json* ./
 COPY packages/shared/package.json ./packages/shared/
 COPY dashboard/package.json ./dashboard/
-RUN npm ci --workspace=dashboard --workspace=@alshisr/shared
+RUN npm ci --workspace=dashboard --workspace=@alshisr/shared --include=dev
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
@@ -15,17 +15,21 @@ COPY package.json ./
 RUN npm run build --workspace=@alshisr/shared
 WORKDIR /app/dashboard
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
+ARG NEXT_PUBLIC_API_URL=http://alshisr.com/api/v1
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+RUN mkdir -p public
 RUN npm run build
 
 FROM base AS runner
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
-COPY --from=builder /app/dashboard/public ./public
+
 COPY --from=builder --chown=nextjs:nodejs /app/dashboard/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/dashboard/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/dashboard/.next/static ./dashboard/.next/static
+COPY --from=builder /app/dashboard/public ./dashboard/public
+
+WORKDIR /app/dashboard
 USER nextjs
 EXPOSE 3001
 ENV PORT=3001
