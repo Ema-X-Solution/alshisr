@@ -2,10 +2,13 @@ FROM node:20-alpine AS base
 WORKDIR /app
 
 FROM base AS deps
+# bcrypt native module + skip root postinstall (scripts not copied yet)
+RUN apk add --no-cache python3 make g++
 COPY package.json package-lock.json* ./
 COPY packages/shared/package.json ./packages/shared/
 COPY backend/package.json ./backend/
-RUN npm ci --workspace=backend --workspace=@alshisr/shared
+RUN npm ci --workspace=backend --workspace=@alshisr/shared --ignore-scripts
+RUN npm rebuild bcrypt --workspace=backend
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
