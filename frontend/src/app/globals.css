@@ -15,7 +15,7 @@
     --card-foreground: 0 0% 13%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 13%;
-    --primary: 6 58% 22%;
+    --primary: 358 70% 34%;
     --primary-foreground: 40 33% 97%;
     --secondary: 38 44% 60%;
     --secondary-foreground: 0 0% 13%;
@@ -27,7 +27,7 @@
     --destructive-foreground: 40 33% 97%;
     --border: 35 20% 88%;
     --input: 35 20% 88%;
-    --ring: 6 58% 22%;
+    --ring: 358 70% 34%;
     --radius: 0.25rem;
   }
 
@@ -50,7 +50,7 @@
   }
 
   .luxury-gradient {
-    background: linear-gradient(135deg, #5C1D16 0%, #8B3A2F 50%, #C8A46B 100%);
+    background: linear-gradient(135deg, #951a1d 0%, #b82428 50%, #C8A46B 100%);
   }
 
   .section-padding {

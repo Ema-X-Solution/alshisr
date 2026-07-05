@@ -7,6 +7,7 @@ import { FiHeart, FiStar } from 'react-icons/fi';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Price, ComparePrice } from '@/components/shared/Price';
 import { useLocaleField } from '@/lib/hooks/useLocaleField';
 import { useCart } from '@/lib/hooks/useCart';
 import { useWishlist } from '@/lib/hooks/useWishlist';
@@ -20,7 +21,7 @@ interface ProductInfoProps {
 
 export function ProductInfo({ product }: ProductInfoProps) {
   const t = useTranslations('product');
-  const { field, formatPrice } = useLocaleField();
+  const { field } = useLocaleField();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const { addItem, isAdding } = useCart();
@@ -74,13 +75,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <span className="text-sm text-muted-foreground">({product.reviewCount})</span>
       </div>
 
-      <div className="flex items-center gap-3">
-        <span className="text-2xl font-semibold text-primary">{formatPrice(price)}</span>
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        <Price amount={price} size="lg" />
         {compareAtPrice && compareAtPrice > price && (
           <>
-            <span className="text-lg text-muted-foreground line-through">
-              {formatPrice(compareAtPrice)}
-            </span>
+            <ComparePrice amount={compareAtPrice} className="text-lg" />
             <Badge variant="secondary">{t('discount', { percent: discount })}</Badge>
           </>
         )}

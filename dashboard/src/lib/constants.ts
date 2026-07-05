@@ -32,4 +32,4 @@ export const ROLE_COLORS: Record<string, string> = {
   CUSTOMER: 'bg-gray-100 text-gray-800',
 };
 
-export const CHART_COLORS = ['#5C1D16', '#C8A46B', '#8B4513', '#D4AF37', '#A0522D', '#CD853F'];
+export const CHART_COLORS = ['#951a1d', '#C8A46B', '#8B4513', '#D4AF37', '#A0522D', '#CD853F'];

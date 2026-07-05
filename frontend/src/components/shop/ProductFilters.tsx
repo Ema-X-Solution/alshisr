@@ -15,6 +15,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { FiFilter } from 'react-icons/fi';
 import type { Category, ProductFilters } from '@/lib/types';
 import { useLocaleField } from '@/lib/hooks/useLocaleField';
+import { cn } from '@/lib/utils/cn';
 
 interface ProductFiltersProps {
   filters: ProductFilters;
@@ -22,7 +23,7 @@ interface ProductFiltersProps {
   categories?: Category[];
 }
 
-export function ProductFiltersPanel({ filters, onChange, categories = [] }: ProductFiltersProps) {
+function FilterContent({ filters, onChange, categories = [] }: ProductFiltersProps) {
   const t = useTranslations('shop');
   const { field } = useLocaleField();
 
@@ -30,7 +31,7 @@ export function ProductFiltersPanel({ filters, onChange, categories = [] }: Prod
     onChange({ ...filters, ...partial, page: 1 });
   };
 
-  const FilterContent = () => (
+  return (
     <div className="space-y-6">
       <div>
         <Label className="mb-2 block">{t('sortBy')}</Label>
@@ -109,30 +110,53 @@ export function ProductFiltersPanel({ filters, onChange, categories = [] }: Prod
       </Button>
     </div>
   );
+}
+
+export function ProductFiltersSidebar({ filters, onChange, categories }: ProductFiltersProps) {
+  const t = useTranslations('shop');
 
   return (
-    <>
-      <aside className="hidden w-64 shrink-0 lg:block">
-        <h3 className="font-display mb-6 text-lg font-semibold">{t('filters')}</h3>
-        <FilterContent />
-      </aside>
+    <aside className="hidden w-64 shrink-0 lg:block">
+      <h3 className="font-display mb-6 text-lg font-semibold">{t('filters')}</h3>
+      <FilterContent filters={filters} onChange={onChange} categories={categories} />
+    </aside>
+  );
+}
 
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" className="lg:hidden">
-            <FiFilter className="me-2 h-4 w-4" />
-            {t('filters')}
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-80">
-          <SheetHeader>
-            <SheetTitle>{t('filters')}</SheetTitle>
-          </SheetHeader>
-          <div className="mt-6">
-            <FilterContent />
-          </div>
-        </SheetContent>
-      </Sheet>
+export function ProductFiltersSheet({
+  filters,
+  onChange,
+  categories,
+  className,
+}: ProductFiltersProps & { className?: string }) {
+  const t = useTranslations('shop');
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="sm" className={cn('shrink-0', className)}>
+          <FiFilter className="me-2 h-4 w-4" />
+          {t('filters')}
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-[min(100vw-2rem,20rem)]">
+        <SheetHeader>
+          <SheetTitle>{t('filters')}</SheetTitle>
+        </SheetHeader>
+        <div className="mt-6">
+          <FilterContent filters={filters} onChange={onChange} categories={categories} />
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+/** @deprecated Use ProductFiltersSidebar + ProductFiltersSheet */
+export function ProductFiltersPanel(props: ProductFiltersProps) {
+  return (
+    <>
+      <ProductFiltersSidebar {...props} />
+      <ProductFiltersSheet {...props} className="lg:hidden" />
     </>
   );
 }

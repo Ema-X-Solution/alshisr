@@ -445,7 +445,7 @@ async function main() {
     { group: 'general', key: 'site_name_ar', value: 'الشِصر', type: 'string' },
     { group: 'general', key: 'tagline', value: 'Luxury Redefined', type: 'string' },
     { group: 'general', key: 'tagline_ar', value: 'الفخامة بأسلوب جديد', type: 'string' },
-    { group: 'colors', key: 'primary', value: '#5C1D16', type: 'string' },
+    { group: 'colors', key: 'primary', value: '#951a1d', type: 'string' },
     { group: 'colors', key: 'secondary', value: '#C8A46B', type: 'string' },
     { group: 'colors', key: 'background', value: '#FAF7F2', type: 'string' },
     { group: 'colors', key: 'text', value: '#222222', type: 'string' },

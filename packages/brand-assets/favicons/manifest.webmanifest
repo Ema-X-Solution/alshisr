@@ -8,7 +8,7 @@
   "orientation": "any",
   "start_url": "/",
   "background_color": "#FAF7F2",
-  "theme_color": "#5C1D16",
+  "theme_color": "#951a1d",
   "icons": [
     {
       "src": "/favicons/android-chrome-192x192.png",

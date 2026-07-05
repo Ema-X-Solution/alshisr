@@ -6,7 +6,7 @@ export const BRAND = {
 } as const;
 
 export const COLORS = {
-  primary: '#5C1D16',
+  primary: '#951a1d',
   secondary: '#C8A46B',
   background: '#FAF7F2',
   text: '#222222',

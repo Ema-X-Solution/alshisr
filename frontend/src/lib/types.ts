@@ -371,6 +371,13 @@ export function formatPrice(amount: number, locale: Locale = 'ar'): string {
   }).format(amount);
 }
 
+export function formatPriceAmount(amount: number, locale: Locale = 'ar'): string {
+  return new Intl.NumberFormat(locale === 'ar' ? 'ar-SA' : 'en-SA', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
 export function getProductImage(product: Product): string {
   const primary = product.images?.find((img) => img.isPrimary);
   return primary?.url || product.images?.[0]?.url || '/placeholder-product.jpg';

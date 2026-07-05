@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { productsApi } from '@/lib/api/products';
 import { categoriesApi } from '@/lib/api/cms';
 import { ProductGrid } from '@/components/shop/ProductGrid';
-import { ProductFiltersPanel } from '@/components/shop/ProductFilters';
+import { ProductFiltersSidebar, ProductFiltersSheet } from '@/components/shop/ProductFilters';
 import { Button } from '@/components/ui/button';
 import type { Category, ProductFilters } from '@/lib/types';
 
@@ -35,35 +35,55 @@ export default function ShopPageContent() {
 
   const products = data?.data ?? [];
   const meta = data?.meta;
+  const categoryList = (categories as Category[]) ?? [];
 
   return (
     <div className="section-padding mx-auto max-w-7xl">
-      <h1 className="font-display mb-8 text-4xl font-bold text-primary">{t('title')}</h1>
-      <div className="flex gap-8">
-        <ProductFiltersPanel
+      <div className="mb-4 flex items-center justify-between gap-3 sm:mb-6">
+        <h1 className="font-display text-3xl font-bold text-primary sm:text-4xl">{t('title')}</h1>
+        <ProductFiltersSheet
           filters={filters}
           onChange={setFilters}
-          categories={(categories as Category[]) ?? []}
+          categories={categoryList}
+          className="lg:hidden"
         />
-        <div className="flex-1">
-          <p className="mb-6 text-muted-foreground">
+      </div>
+
+      <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
+        <p className="text-sm text-muted-foreground">
+          {meta ? t('productsFound', { count: meta.total }) : t('noProducts')}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
+        <ProductFiltersSidebar
+          filters={filters}
+          onChange={setFilters}
+          categories={categoryList}
+        />
+        <div className="min-w-0 flex-1">
+          <p className="mb-4 hidden text-muted-foreground lg:block">
             {meta ? t('productsFound', { count: meta.total }) : t('noProducts')}
           </p>
           <ProductGrid products={products} isLoading={isLoading} />
           {meta && meta.totalPages > 1 && (
-            <div className="mt-10 flex justify-center gap-2">
+            <div className="mt-8 flex justify-center gap-2 sm:mt-10">
               <Button
                 variant="outline"
+                size="sm"
+                className="sm:size-default"
                 disabled={!meta.hasPrevPage}
                 onClick={() => setFilters((f) => ({ ...f, page: (f.page ?? 1) - 1 }))}
               >
                 Previous
               </Button>
-              <span className="flex items-center px-4 text-sm text-muted-foreground">
+              <span className="flex items-center px-3 text-sm text-muted-foreground sm:px-4">
                 {meta.page} / {meta.totalPages}
               </span>
               <Button
                 variant="outline"
+                size="sm"
+                className="sm:size-default"
                 disabled={!meta.hasNextPage}
                 onClick={() => setFilters((f) => ({ ...f, page: (f.page ?? 1) + 1 }))}
               >
