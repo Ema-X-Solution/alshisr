@@ -1,6 +1,4 @@
-import Image from 'next/image';
 import { BRAND, BRAND_ASSETS } from '@alshisr/shared';
-
 interface BrandLogoProps {
   className?: string;
   height?: number;
