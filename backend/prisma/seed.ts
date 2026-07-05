@@ -339,8 +339,8 @@ async function main() {
       title: 'About Us',
       titleAr: 'من نحن',
       slug: 'about',
-      content: '<h2>Our Story</h2><p>AL SHISR represents the pinnacle of Arabian luxury...</p>',
-      contentAr: '<h2>قصتنا</h2><p>الشِصر تمثل قمة الفخامة العربية...</p>',
+      content: '<p>AL SHISR is an Omani brand specializing in premium organic Kashmiri saffron from Dhofar.</p>',
+      contentAr: '<p>الشِصر علامة عُمانية متخصصة في الزعفران الكشميري العضوي الفاخر من ظفار.</p>',
     },
     {
       title: 'Privacy Policy',

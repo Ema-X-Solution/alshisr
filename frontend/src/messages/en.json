@@ -46,7 +46,7 @@
   },
   "footer": {
     "about": "About AL SHISR",
-    "aboutText": "AL SHISR represents the pinnacle of Arabian luxury, where authentic heritage meets modern elegance.",
+    "aboutText": "AL SHISR is an Omani brand for premium organic Kashmiri saffron, blending authentic heritage with world-class quality.",
     "quickLinks": "Quick Links",
     "customerService": "Customer Service",
     "contactUs": "Contact Us",
@@ -70,7 +70,7 @@
     "categories": "Browse Categories",
     "offers": "Special Offers",
     "aboutBrand": "About the Brand",
-    "aboutBrandText": "AL SHISR represents the pinnacle of Arabian luxury, where authentic heritage meets modern elegance in every piece we offer.",
+    "aboutBrandText": "AL SHISR is an Omani brand for premium organic Kashmiri saffron from Dhofar, where authentic heritage meets exceptional quality.",
     "testimonials": "Customer Reviews",
     "instagram": "Follow Us on Instagram",
     "newsletter": "Join Our Family",
@@ -261,7 +261,31 @@
     "productsCount": "{count} products"
   },
   "about": {
-    "title": "About Us"
+    "title": "About Us",
+    "whoWeAre": {
+      "title": "Who We Are",
+      "text": "AL SHISR is an Omani brand specializing in premium food products, drawing its identity from the Al-Shisr region in Dhofar Governorate. We are committed to the highest quality standards, celebrate authentic Omani heritage, and focus on delivering exceptional organic Kashmiri saffron.",
+      "imageAlt": "Saffron harvest in Al-Shisr region"
+    },
+    "visionMission": {
+      "title": "Vision & Mission",
+      "visionLabel": "Our Vision:",
+      "vision": "To be a leading and trusted brand in luxury food products, especially organic Kashmiri saffron, with a strong local and regional presence.",
+      "missionLabel": "Our Mission:",
+      "mission": "To deliver natural products of exceptional quality through careful crop selection and modern packaging that earns our customers' trust.",
+      "imageAlt": "Premium Kashmiri saffron"
+    },
+    "goals": {
+      "title": "Our Goals",
+      "imageAlt": "AL SHISR premium saffron",
+      "items": [
+        "Quality leadership: strict commitment to selecting 100% natural organic Kashmiri saffron to the highest international standards.",
+        "Packaging innovation: advanced packaging solutions and elegant designs that preserve product quality, flavor, and nutritional value.",
+        "Customer experience: diverse options for personal use, luxury gifting, and corporate needs.",
+        "Health value: raising awareness of saffron's health and nutritional benefits as one of the world's most precious natural spices.",
+        "Growth & reach: building strategic partnerships and expanding distribution to regional and global markets."
+      ]
+    }
   },
   "pages": {
     "privacy": "Privacy Policy",

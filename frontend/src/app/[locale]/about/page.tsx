@@ -1,5 +1,16 @@
-import { CmsPageContent } from '@/components/shared/CmsPageContent';
+import { getTranslations } from 'next-intl/server';
+import { AboutPageContent } from '@/components/about/AboutPageContent';
 
-export default function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
-  return <CmsPageContent params={params} slug="about" titleNamespace="about" titleKey="title" />;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'about' });
+
+  return {
+    title: t('title'),
+    description: t('whoWeAre.text'),
+  };
+}
+
+export default function AboutPage() {
+  return <AboutPageContent />;
 }
