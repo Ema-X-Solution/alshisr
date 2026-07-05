@@ -11,6 +11,9 @@ jobs:
       - name: Checkout latest code
         uses: actions/checkout@v4
 
+      - name: Copy environment file
+        run: cp /var/www/alshisr/.env $GITHUB_WORKSPACE/.env
+
       - name: Build all services
         run: docker compose -f docker/docker-compose.yml build
 
