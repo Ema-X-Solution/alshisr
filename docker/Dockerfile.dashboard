@@ -9,7 +9,6 @@ RUN npm ci --workspace=dashboard --workspace=@alshisr/shared --include=dev
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/dashboard/node_modules ./dashboard/node_modules
 COPY packages/shared ./packages/shared
 COPY dashboard ./dashboard
 COPY package.json ./
