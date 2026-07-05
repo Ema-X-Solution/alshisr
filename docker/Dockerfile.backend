@@ -5,7 +5,7 @@ FROM base AS deps
 COPY package.json package-lock.json* ./
 COPY packages/shared/package.json ./packages/shared/
 COPY backend/package.json ./backend/
-RUN npm ci --workspace=backend --workspace=@alshisr/shared
+RUN npm ci --workspace=backend --workspace=@alshisr/shared --ignore-scripts
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules

@@ -13,8 +13,8 @@ const files = ['logo_alshisr.png', 'favicon.ico'];
 
 function syncBrandAssets() {
   if (!existsSync(source)) {
-    console.error('[sync-brand-assets] Source not found:', source);
-    process.exit(1);
+    console.log('[sync-brand-assets] Source not found, skipping:', source);
+    return;
   }
 
   for (const target of targets) {
