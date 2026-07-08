@@ -92,7 +92,7 @@ export interface Product {
   shortDescriptionAr?: string;
   sku: string;
   price: number;
-  compareAtPrice?: number;
+  compareAtPrice?: number | null;
   costPrice?: number;
   stock: number;
   lowStockThreshold: number;
@@ -128,7 +128,7 @@ export interface ProductVariant {
   id?: string;
   sku: string;
   price: number;
-  compareAtPrice?: number;
+  compareAtPrice?: number | null;
   stock?: number;
   attributes: Record<string, string>;
   isActive?: boolean;

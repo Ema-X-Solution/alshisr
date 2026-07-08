@@ -98,8 +98,8 @@ export function ProductForm({ product }: ProductFormProps) {
       shortDescriptionAr: product?.shortDescriptionAr || '',
       sku: product?.sku || '',
       price: product?.price || 0,
-      compareAtPrice: product?.compareAtPrice,
-      costPrice: product?.costPrice,
+      compareAtPrice: product?.compareAtPrice ?? undefined,
+      costPrice: product?.costPrice ?? undefined,
       stock: product?.stock || 0,
       lowStockThreshold: product?.lowStockThreshold || 5,
       weight: product?.weight,
@@ -115,7 +115,10 @@ export function ProductForm({ product }: ProductFormProps) {
       metaDescriptionAr: product?.metaDescriptionAr || '',
       tags: product?.tags?.join(', ') || '',
       images: product?.images || [],
-      variants: product?.variants || [],
+      variants: product?.variants?.map((v) => ({
+        ...v,
+        compareAtPrice: v.compareAtPrice ?? undefined,
+      })) || [],
     },
   });
 
