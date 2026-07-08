@@ -57,3 +57,88 @@
     @apply px-4 py-16 md:px-8 md:py-24 lg:px-12;
   }
 }
+
+/* Hero slider navigation & pagination */
+.hero-swiper {
+  --swiper-navigation-size: 18px;
+  --swiper-navigation-color: hsl(var(--secondary));
+  --swiper-pagination-color: hsl(var(--secondary));
+  --swiper-pagination-bullet-inactive-color: #ffffff;
+  --swiper-pagination-bullet-inactive-opacity: 0.45;
+}
+
+.hero-swiper .swiper-button-prev,
+.hero-swiper .swiper-button-next {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-top: 0;
+  top: 50%;
+  translate: 0 -50%;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: hsl(var(--secondary));
+  backdrop-filter: blur(6px);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hero-swiper .swiper-button-prev:hover,
+.hero-swiper .swiper-button-next:hover {
+  background: hsl(var(--primary));
+  border-color: hsl(var(--secondary));
+  color: hsl(var(--secondary));
+}
+
+.hero-swiper .swiper-button-prev::after,
+.hero-swiper .swiper-button-next::after {
+  font-size: var(--swiper-navigation-size);
+  font-weight: 700;
+}
+
+.hero-swiper .swiper-button-prev {
+  inset-inline-start: 0.75rem;
+  left: auto;
+  right: auto;
+}
+
+.hero-swiper .swiper-button-next {
+  inset-inline-end: 0.75rem;
+  left: auto;
+  right: auto;
+}
+
+@media (min-width: 768px) {
+  .hero-swiper .swiper-button-prev,
+  .hero-swiper .swiper-button-next {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .hero-swiper .swiper-button-prev {
+    inset-inline-start: 1.5rem;
+  }
+
+  .hero-swiper .swiper-button-next {
+    inset-inline-end: 1.5rem;
+  }
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: rgba(255, 255, 255, 0.55);
+  opacity: 1;
+  transition:
+    width 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  width: 1.5rem;
+  border-radius: 9999px;
+  background: hsl(var(--secondary));
+}
