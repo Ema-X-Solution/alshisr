@@ -295,7 +295,45 @@
     "shipping": "Shipping",
     "saved": "Settings saved successfully",
     "saveFailed": "Failed to save settings",
-    "saveGroup": "Save {group}"
+    "saveGroup": "Save {group}",
+    "colorKeys": {
+      "primary": {
+        "label": "Primary",
+        "affects": "Buttons, footer, links, headings, cart badge, and active menu items"
+      },
+      "secondary": {
+        "label": "Secondary (Gold)",
+        "affects": "Accent buttons, discount badges, star ratings, and highlights"
+      },
+      "background": {
+        "label": "Background",
+        "affects": "Main page background behind product grids and sections"
+      },
+      "text": {
+        "label": "Text",
+        "affects": "Body text, product titles, and general readable content"
+      },
+      "lavender": {
+        "label": "Lavender",
+        "affects": "Soft purple accents and luxury gradient mid-tone"
+      },
+      "saffron": {
+        "label": "Saffron",
+        "affects": "Saffron / orange promotional accents"
+      },
+      "olive": {
+        "label": "Olive",
+        "affects": "Farm / nature green accents in feature sections"
+      },
+      "sage": {
+        "label": "Sage",
+        "affects": "Light green supporting accents"
+      },
+      "brown": {
+        "label": "Warm Brown",
+        "affects": "Warm secondary accents and earthy details"
+      }
+    }
   },
   "notifications": {
     "title": "Notifications",
