@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { APP_REGION } from '@alshisr/shared';
+import { APP_REGION, getRegionLocale, type AppLocaleTag } from '@alshisr/shared';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,7 +15,11 @@ export function formatCurrency(amount: number, currency = APP_REGION.currency, l
   }).format(amount);
 }
 
-export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions, locale = APP_REGION.localeEn) {
+export function formatDate(
+  date: string | Date,
+  options?: Intl.DateTimeFormatOptions,
+  locale: AppLocaleTag = APP_REGION.localeEn,
+) {
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'short',
@@ -24,9 +28,8 @@ export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOpt
   }).format(new Date(date));
 }
 
-export function formatDateTime(date: string | Date, locale: string = APP_REGION.localeEn) {
-  const localeTag =
-    locale === 'ar' ? APP_REGION.localeAr : locale === 'en' ? APP_REGION.localeEn : locale;
+export function formatDateTime(date: string | Date, locale: string = 'en') {
+  const localeTag = getRegionLocale(locale === 'ar' ? 'ar' : 'en');
   return formatDate(date, {
     hour: '2-digit',
     minute: '2-digit',
