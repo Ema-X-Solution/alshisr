@@ -3,15 +3,16 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { type ColumnDef } from '@tanstack/react-table';
 import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/data-table/DataTable';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { DeleteConfirmDialog } from '@/components/shared/DeleteConfirmDialog';
 import { cmsApi } from '@/lib/services';
-import { useToast } from '@/hooks/use-toast';
+import { useDeleteConfirm } from '@/hooks/use-delete-confirm';
 import type { Slider } from '@/lib/types';
 
 export default function SlidersPage() {
@@ -19,21 +20,17 @@ export default function SlidersPage() {
   const tNav = useTranslations('nav');
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   const { data: sliders = [], isLoading } = useQuery({
     queryKey: ['sliders'],
     queryFn: cmsApi.listSliders,
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: cmsApi.deleteSlider,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sliders'] });
-      toast({ title: t('deleted') });
-    },
-    onError: () => toast({ title: t('deleteFailed'), variant: 'destructive' }),
+  const { deleteDialogProps, openDelete } = useDeleteConfirm({
+    deleteFn: cmsApi.deleteSlider,
+    queryKey: 'sliders',
+    successMessage: t('deleted'),
+    fallbackErrorMessage: t('deleteFailed'),
   });
 
   const columns: ColumnDef<Slider>[] = [
@@ -62,7 +59,7 @@ export default function SlidersPage() {
       cell: ({ row }) => (
         <div className="flex gap-2">
           <Button variant="ghost" size="icon" asChild><Link href={`/sliders/${row.original.id}/edit`}><HiOutlinePencil className="h-4 w-4" /></Link></Button>
-          <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(row.original.id)}><HiOutlineTrash className="h-4 w-4 text-destructive" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => openDelete(row.original.id, row.original.title)}><HiOutlineTrash className="h-4 w-4 text-destructive" /></Button>
         </div>
       ),
     },
@@ -76,6 +73,7 @@ export default function SlidersPage() {
         <Button asChild><Link href="/sliders/create"><HiOutlinePlus className="h-4 w-4" /> {t('add')}</Link></Button>
       </div>
       <DataTable columns={columns} data={sliders} isLoading={isLoading} />
+      <DeleteConfirmDialog {...deleteDialogProps} />
     </div>
   );
 }

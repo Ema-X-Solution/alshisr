@@ -12,10 +12,18 @@ export class BrandsService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(includeInactive = false) {
-    return this.prisma.brand.findMany({
+    const brands = await this.prisma.brand.findMany({
       where: includeInactive ? undefined : { isActive: true },
       orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+      include: {
+        _count: { select: { products: true } },
+      },
     });
+
+    return brands.map(({ _count, ...brand }) => ({
+      ...brand,
+      productsCount: _count.products,
+    }));
   }
 
   async findOne(id: string) {

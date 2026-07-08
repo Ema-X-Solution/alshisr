@@ -143,9 +143,9 @@ export function ProductForm({ product }: ProductFormProps) {
 
   const switchLabels: Record<'isActive' | 'isFeatured' | 'isBestSeller' | 'hasVariants', string> = {
     isActive: tCommon('active'),
-    isFeatured: 'Featured',
-    isBestSeller: 'Best Seller',
-    hasVariants: 'Has Variants',
+    isFeatured: tForms('featured'),
+    isBestSeller: tForms('bestSeller'),
+    hasVariants: tForms('hasVariants'),
   };
 
   return (
@@ -175,7 +175,7 @@ export function ProductForm({ product }: ProductFormProps) {
           <div className="space-y-2">
             <Label>{tForms('category')}</Label>
             <Select value={watch('categoryId')} onValueChange={(v) => setValue('categoryId', v)}>
-              <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={tForms('selectCategory')} /></SelectTrigger>
               <SelectContent>
                 {categories.map((c) => (
                   <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
@@ -186,7 +186,7 @@ export function ProductForm({ product }: ProductFormProps) {
           <div className="space-y-2">
             <Label>{tForms('brand')}</Label>
             <Select value={watch('brandId') || ''} onValueChange={(v) => setValue('brandId', v)}>
-              <SelectTrigger><SelectValue placeholder="Select brand" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={tForms('selectBrand')} /></SelectTrigger>
               <SelectContent>
                 {brands.map((b) => (
                   <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>
@@ -196,7 +196,7 @@ export function ProductForm({ product }: ProductFormProps) {
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="shortDescription">Short Description (EN)</Label>
+          <Label htmlFor="shortDescription">{tForms('shortDescriptionEn')}</Label>
           <Textarea id="shortDescription" {...register('shortDescription')} />
         </div>
         <div className="space-y-2">
@@ -205,7 +205,7 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
       </FormSection>
 
-      <FormSection title="Pricing & Inventory">
+      <FormSection title={tForms('pricingInventory')}>
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="space-y-2">
             <Label htmlFor="price">{tForms('price')}</Label>
@@ -216,7 +216,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input id="compareAtPrice" type="number" step="0.01" {...register('compareAtPrice')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="costPrice">Cost Price</Label>
+            <Label htmlFor="costPrice">{tForms('costPrice')}</Label>
             <Input id="costPrice" type="number" step="0.01" {...register('costPrice')} />
           </div>
           <div className="space-y-2">
@@ -224,17 +224,17 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input id="stock" type="number" {...register('stock')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="lowStockThreshold">Low Stock Threshold</Label>
+            <Label htmlFor="lowStockThreshold">{tForms('lowStockThreshold')}</Label>
             <Input id="lowStockThreshold" type="number" {...register('lowStockThreshold')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="weight">Weight (kg)</Label>
+            <Label htmlFor="weight">{tForms('weight')}</Label>
             <Input id="weight" type="number" step="0.01" {...register('weight')} />
           </div>
         </div>
         <div className="flex flex-wrap gap-6">
           {(['isActive', 'isFeatured', 'isBestSeller', 'hasVariants'] as const).map((field) => (
-            <div key={field} className="flex items-center gap-2">
+            <div key={field} className="flex items-center gap-2 rtl:flex-row-reverse">
               <Switch checked={watch(field)} onCheckedChange={(v) => setValue(field, v)} />
               <Label>{switchLabels[field]}</Label>
             </div>
@@ -251,61 +251,61 @@ export function ProductForm({ product }: ProductFormProps) {
               folder="products"
             />
             <div className="flex-1 space-y-2">
-              <Input placeholder="Alt text" {...register(`images.${index}.alt`)} />
-              <div className="flex items-center gap-2">
+              <Input placeholder={tForms('altText')} {...register(`images.${index}.alt`)} />
+              <div className="flex items-center gap-2 rtl:flex-row-reverse">
                 <Switch
                   checked={watch(`images.${index}.isPrimary`)}
                   onCheckedChange={(v) => setValue(`images.${index}.isPrimary`, v)}
                 />
-                <Label>Primary image</Label>
+                <Label>{tForms('primaryImage')}</Label>
               </div>
             </div>
-            <Button type="button" variant="ghost" size="sm" onClick={() => removeImage(index)}>Remove</Button>
+            <Button type="button" variant="ghost" size="sm" onClick={() => removeImage(index)}>{tForms('remove')}</Button>
           </div>
         ))}
         <Button type="button" variant="outline" size="sm" onClick={() => appendImage({ url: '', isPrimary: imageFields.length === 0 })}>
-          Add Image
+          {tForms('addImage')}
         </Button>
       </FormSection>
 
       {hasVariants && (
-        <FormSection title="Variants">
+        <FormSection title={tForms('variants')}>
           {variantFields.map((field, index) => (
             <div key={field.id} className="grid gap-4 sm:grid-cols-4 border-b pb-4">
-              <Input placeholder="SKU" {...register(`variants.${index}.sku`)} />
-              <Input type="number" placeholder="Price" {...register(`variants.${index}.price`)} />
-              <Input type="number" placeholder="Stock" {...register(`variants.${index}.stock`)} />
+              <Input placeholder={tForms('sku')} {...register(`variants.${index}.sku`)} />
+              <Input type="number" placeholder={tForms('price')} {...register(`variants.${index}.price`)} />
+              <Input type="number" placeholder={tForms('stock')} {...register(`variants.${index}.stock`)} />
               <Input placeholder='Attributes e.g. size:M,color:Black' onChange={(e) => {
                 const parts = e.target.value.split(',');
                 const attrs: Record<string, string> = {};
                 parts.forEach((p) => { const [k, v] = p.split(':'); if (k && v) attrs[k.trim()] = v.trim(); });
                 setValue(`variants.${index}.attributes`, attrs);
               }} />
-              <Button type="button" variant="ghost" size="sm" onClick={() => removeVariant(index)}>Remove</Button>
+              <Button type="button" variant="ghost" size="sm" onClick={() => removeVariant(index)}>{tForms('remove')}</Button>
             </div>
           ))}
           <Button type="button" variant="outline" size="sm" onClick={() => appendVariant({ sku: '', price: 0, stock: 0, attributes: {}, isActive: true })}>
-            Add Variant
+            {tForms('addVariant')}
           </Button>
         </FormSection>
       )}
 
-      <FormSection title="SEO">
+      <FormSection title={tForms('seo')}>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="metaTitle">Meta Title (EN)</Label>
+            <Label htmlFor="metaTitle">{tForms('metaTitleEn')}</Label>
             <Input id="metaTitle" {...register('metaTitle')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="metaTitleAr">Meta Title (AR)</Label>
+            <Label htmlFor="metaTitleAr">{tForms('metaTitleAr')}</Label>
             <Input id="metaTitleAr" dir="rtl" {...register('metaTitleAr')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="metaDescription">Meta Description (EN)</Label>
+            <Label htmlFor="metaDescription">{tForms('metaDescriptionEn')}</Label>
             <Textarea id="metaDescription" {...register('metaDescription')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="metaDescriptionAr">Meta Description (AR)</Label>
+            <Label htmlFor="metaDescriptionAr">{tForms('metaDescriptionAr')}</Label>
             <Textarea id="metaDescriptionAr" dir="rtl" {...register('metaDescriptionAr')} />
           </div>
           <div className="space-y-2 sm:col-span-2">

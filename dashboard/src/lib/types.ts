@@ -153,6 +153,7 @@ export interface Category {
   isActive: boolean;
   sortOrder: number;
   productCount?: number;
+  productsCount?: number;
   children?: Category[];
 }
 
@@ -166,6 +167,8 @@ export interface Brand {
   logo?: string;
   isActive: boolean;
   sortOrder: number;
+  productCount?: number;
+  productsCount?: number;
 }
 
 export interface Order {

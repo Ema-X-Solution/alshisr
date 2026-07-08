@@ -2,15 +2,16 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { type ColumnDef } from '@tanstack/react-table';
 import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/data-table/DataTable';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { DeleteConfirmDialog } from '@/components/shared/DeleteConfirmDialog';
 import { categoriesApi } from '@/lib/services';
-import { useToast } from '@/hooks/use-toast';
+import { useDeleteConfirm } from '@/hooks/use-delete-confirm';
 import type { Category } from '@/lib/types';
 
 export default function CategoriesPage() {
@@ -18,21 +19,21 @@ export default function CategoriesPage() {
   const tNav = useTranslations('nav');
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: categoriesApi.list,
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: categoriesApi.delete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
-      toast({ title: t('deleted') });
+  const { deleteDialogProps, openDelete } = useDeleteConfirm({
+    deleteFn: categoriesApi.delete,
+    queryKey: 'categories',
+    successMessage: t('deleted'),
+    fallbackErrorMessage: t('deleteFailed'),
+    conflictMessages: {
+      'Cannot delete category with associated products': t('deleteHasProducts'),
+      'Cannot delete category with subcategories': t('deleteHasSubcategories'),
     },
-    onError: () => toast({ title: t('deleteFailed'), variant: 'destructive' }),
   });
 
   const columns: ColumnDef<Category>[] = [
@@ -53,7 +54,11 @@ export default function CategoriesPage() {
           <Button variant="ghost" size="icon" asChild>
             <Link href={`/categories/${row.original.id}/edit`}><HiOutlinePencil className="h-4 w-4" /></Link>
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(row.original.id)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => openDelete(row.original.id, row.original.name)}
+          >
             <HiOutlineTrash className="h-4 w-4 text-destructive" />
           </Button>
         </div>
@@ -69,6 +74,7 @@ export default function CategoriesPage() {
         <Button asChild><Link href="/categories/create"><HiOutlinePlus className="h-4 w-4" /> {t('add')}</Link></Button>
       </div>
       <DataTable columns={columns} data={categories} isLoading={isLoading} />
+      <DeleteConfirmDialog {...deleteDialogProps} />
     </div>
   );
 }

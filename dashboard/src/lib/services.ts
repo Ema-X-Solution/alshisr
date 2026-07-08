@@ -56,7 +56,16 @@ export const productsApi = {
 
 // Categories
 export const categoriesApi = {
-  list: () => apiGet<Category[]>('/categories'),
+  list: async () => {
+    const categories = await apiGet<Category[]>('/categories');
+    const normalize = (items: Category[]): Category[] =>
+      items.map((category) => ({
+        ...category,
+        productCount: category.productCount ?? category.productsCount ?? 0,
+        children: category.children ? normalize(category.children) : undefined,
+      }));
+    return normalize(categories);
+  },
   get: (id: string) => apiGet<Category>(`/categories/${id}`),
   create: (data: Partial<Category>) => apiPost<Category>('/categories', data),
   update: (id: string, data: Partial<Category>) =>
@@ -66,7 +75,13 @@ export const categoriesApi = {
 
 // Brands
 export const brandsApi = {
-  list: () => apiGet<Brand[]>('/brands'),
+  list: async () => {
+    const brands = await apiGet<Brand[]>('/brands');
+    return brands.map((brand) => ({
+      ...brand,
+      productCount: brand.productCount ?? brand.productsCount ?? 0,
+    }));
+  },
   get: (id: string) => apiGet<Brand>(`/brands/${id}`),
   create: (data: Partial<Brand>) => apiPost<Brand>('/brands', data),
   update: (id: string, data: Partial<Brand>) =>

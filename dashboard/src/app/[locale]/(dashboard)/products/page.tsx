@@ -4,16 +4,17 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { type ColumnDef } from '@tanstack/react-table';
 import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/data-table/DataTable';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { DeleteConfirmDialog } from '@/components/shared/DeleteConfirmDialog';
 import { productsApi } from '@/lib/services';
 import { formatCurrency } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
+import { useDeleteConfirm } from '@/hooks/use-delete-confirm';
 import type { Product } from '@/lib/types';
 
 export default function ProductsPage() {
@@ -22,21 +23,17 @@ export default function ProductsPage() {
   const tCommon = useTranslations('common');
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: ['products', page, search],
     queryFn: () => productsApi.list({ page, limit: 10, search }),
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: productsApi.delete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-      toast({ title: t('deleted') });
-    },
-    onError: () => toast({ title: t('deleteFailed'), variant: 'destructive' }),
+  const { deleteDialogProps, openDelete } = useDeleteConfirm({
+    deleteFn: productsApi.delete,
+    queryKey: 'products',
+    successMessage: t('deleted'),
+    fallbackErrorMessage: t('deleteFailed'),
   });
 
   const columns: ColumnDef<Product>[] = [
@@ -74,7 +71,7 @@ export default function ProductsPage() {
           <Button variant="ghost" size="icon" asChild>
             <Link href={`/products/${row.original.id}/edit`}><HiOutlinePencil className="h-4 w-4" /></Link>
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(row.original.id)}>
+          <Button variant="ghost" size="icon" onClick={() => openDelete(row.original.id, row.original.name)}>
             <HiOutlineTrash className="h-4 w-4 text-destructive" />
           </Button>
         </div>
@@ -99,6 +96,7 @@ export default function ProductsPage() {
         onPageChange={setPage}
         searchPlaceholder={t('search')}
       />
+      <DeleteConfirmDialog {...deleteDialogProps} />
     </div>
   );
 }

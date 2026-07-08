@@ -2,16 +2,17 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { type ColumnDef } from '@tanstack/react-table';
 import { HiOutlinePlus, HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/data-table/DataTable';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { DeleteConfirmDialog } from '@/components/shared/DeleteConfirmDialog';
 import { couponsApi } from '@/lib/services';
 import { formatDate } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
+import { useDeleteConfirm } from '@/hooks/use-delete-confirm';
 import type { Coupon } from '@/lib/types';
 
 export default function CouponsPage() {
@@ -19,21 +20,17 @@ export default function CouponsPage() {
   const tNav = useTranslations('nav');
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
 
   const { data: coupons = [], isLoading } = useQuery({
     queryKey: ['coupons'],
     queryFn: couponsApi.list,
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: couponsApi.delete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['coupons'] });
-      toast({ title: t('deleted') });
-    },
-    onError: () => toast({ title: t('deleteFailed'), variant: 'destructive' }),
+  const { deleteDialogProps, openDelete } = useDeleteConfirm({
+    deleteFn: couponsApi.delete,
+    queryKey: 'coupons',
+    successMessage: t('deleted'),
+    fallbackErrorMessage: t('deleteFailed'),
   });
 
   const columns: ColumnDef<Coupon>[] = [
@@ -53,7 +50,7 @@ export default function CouponsPage() {
       cell: ({ row }) => (
         <div className="flex gap-2">
           <Button variant="ghost" size="icon" asChild><Link href={`/coupons/${row.original.id}/edit`}><HiOutlinePencil className="h-4 w-4" /></Link></Button>
-          <Button variant="ghost" size="icon" onClick={() => deleteMutation.mutate(row.original.id)}><HiOutlineTrash className="h-4 w-4 text-destructive" /></Button>
+          <Button variant="ghost" size="icon" onClick={() => openDelete(row.original.id, row.original.code)}><HiOutlineTrash className="h-4 w-4 text-destructive" /></Button>
         </div>
       ),
     },
@@ -67,6 +64,7 @@ export default function CouponsPage() {
         <Button asChild><Link href="/coupons/create"><HiOutlinePlus className="h-4 w-4" /> {t('add')}</Link></Button>
       </div>
       <DataTable columns={columns} data={coupons} isLoading={isLoading} />
+      <DeleteConfirmDialog {...deleteDialogProps} />
     </div>
   );
 }
