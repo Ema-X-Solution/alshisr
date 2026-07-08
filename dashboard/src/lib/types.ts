@@ -308,6 +308,20 @@ export interface Faq {
   isActive: boolean;
 }
 
+export interface Testimonial {
+  id: string;
+  name: string;
+  nameAr?: string;
+  role?: string;
+  roleAr?: string;
+  content: string;
+  contentAr: string;
+  avatar?: string;
+  rating: number;
+  isActive: boolean;
+  sortOrder: number;
+}
+
 export interface Review {
   id: string;
   rating: number;

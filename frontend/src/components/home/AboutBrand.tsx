@@ -1,14 +1,16 @@
 'use client';
 
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { SectionHeading } from '@/components/shared/SectionHeading';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
+const ABOUT_BRAND_IMAGE = '/about/AboutBrand._image.jpeg';
+
 export function AboutBrand() {
   const t = useTranslations('home');
-  const tCommon = useTranslations('common');
 
   return (
     <section className="section-padding overflow-hidden">
@@ -17,14 +19,16 @@ export function AboutBrand() {
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="relative aspect-[4/5] bg-primary/5"
+          className="relative aspect-[4/5] overflow-hidden bg-primary/5"
         >
-          <div className="absolute inset-8 border border-secondary/40" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-display text-6xl font-bold text-primary/20 md:text-8xl">
-              {tCommon('siteName')}
-            </span>
-          </div>
+          <Image
+            src={ABOUT_BRAND_IMAGE}
+            alt={t('aboutBrand')}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover rounded-lg"
+          />
+          <div className="pointer-events-none  absolute inset-8 border border-secondary/40" />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, x: 30 }}

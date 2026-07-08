@@ -46,6 +46,7 @@
     "banners": "البنرات",
     "sliders": "الشرائح",
     "reviews": "التقييمات",
+    "testimonials": "آراء العملاء",
     "blogs": "المدونة",
     "pages": "الصفحات",
     "faq": "الأسئلة الشائعة",
@@ -259,6 +260,17 @@
     "createTitle": "إنشاء سؤال",
     "editTitle": "تعديل سؤال"
   },
+  "testimonials": {
+    "title": "آراء العملاء",
+    "add": "إضافة رأي",
+    "search": "بحث في الآراء...",
+    "name": "الاسم",
+    "content": "المحتوى",
+    "deleted": "تم حذف الرأي",
+    "deleteFailed": "فشل حذف الرأي",
+    "createTitle": "إنشاء رأي عميل",
+    "editTitle": "تعديل رأي عميل"
+  },
   "contact": {
     "title": "رسائل التواصل",
     "search": "بحث في الرسائل...",
@@ -371,6 +383,11 @@
     "position": "الموضع",
     "link": "الرابط",
     "sortOrder": "ترتيب العرض",
+    "rating": "التقييم",
+    "roleEn": "الدور (إنجليزي)",
+    "roleAr": "الدور (عربي)",
+    "rolePlaceholder": "عميل، زبون، إلخ.",
+    "avatar": "الصورة الشخصية",
     "firstName": "الاسم الأول",
     "lastName": "اسم العائلة",
     "email": "البريد الإلكتروني",
@@ -396,6 +413,7 @@
     "itemBlog": "المقال",
     "itemPage": "الصفحة",
     "itemFaq": "السؤال",
+    "itemTestimonial": "رأي العميل",
     "itemUser": "المستخدم"
   }
 }

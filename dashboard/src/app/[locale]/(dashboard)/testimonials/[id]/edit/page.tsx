@@ -1,0 +1,44 @@
+'use client';
+
+import { use } from 'react';
+import { useTranslations } from 'next-intl';
+import { useQuery } from '@tanstack/react-query';
+import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { TestimonialForm } from '@/components/forms/TestimonialForm';
+import { PageLoader } from '@/components/ui/loading';
+import { cmsApi } from '@/lib/services';
+
+export default function EditTestimonialPage({ params }: { params: Promise<{ id: string }> }) {
+  const t = useTranslations('testimonials');
+  const tNav = useTranslations('nav');
+  const tCommon = useTranslations('common');
+  const { id } = use(params);
+
+  const { data: testimonials, isLoading } = useQuery({
+    queryKey: ['testimonials'],
+    queryFn: () => cmsApi.listTestimonials(),
+  });
+
+  const testimonial = testimonials?.find((item) => item.id === id);
+
+  if (isLoading) return <PageLoader />;
+
+  return (
+    <div className="space-y-6">
+      <Breadcrumb
+        items={[
+          { label: tNav('dashboard'), href: '/' },
+          { label: t('title'), href: '/testimonials' },
+          { label: tCommon('edit') },
+        ]}
+      />
+      <h2 className="text-2xl font-bold">{t('editTitle')}</h2>
+      {testimonial && (
+        <TestimonialForm
+          testimonial={testimonial}
+          onSubmit={(data) => cmsApi.updateTestimonial(id, data)}
+        />
+      )}
+    </div>
+  );
+}

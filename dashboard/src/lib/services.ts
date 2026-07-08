@@ -25,6 +25,7 @@ import type {
   Review,
   SettingsGrouped,
   Slider,
+  Testimonial,
   User,
 } from './types';
 
@@ -168,6 +169,14 @@ export const cmsApi = {
   updateFaq: (id: string, data: Partial<Faq>) =>
     apiPatch<Faq>(`/cms/faqs/${id}`, data),
   deleteFaq: (id: string) => apiDelete(`/cms/faqs/${id}`),
+
+  // Testimonials
+  listTestimonials: () => apiGet<Testimonial[]>('/cms/admin/testimonials'),
+  createTestimonial: (data: Partial<Testimonial>) =>
+    apiPost<Testimonial>('/cms/testimonials', data),
+  updateTestimonial: (id: string, data: Partial<Testimonial>) =>
+    apiPatch<Testimonial>(`/cms/testimonials/${id}`, data),
+  deleteTestimonial: (id: string) => apiDelete(`/cms/testimonials/${id}`),
 };
 
 // Reviews

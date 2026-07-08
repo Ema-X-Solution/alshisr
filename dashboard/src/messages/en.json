@@ -46,6 +46,7 @@
     "banners": "Banners",
     "sliders": "Sliders",
     "reviews": "Reviews",
+    "testimonials": "Testimonials",
     "blogs": "Blogs",
     "pages": "Pages",
     "faq": "FAQ",
@@ -259,6 +260,17 @@
     "createTitle": "Create FAQ",
     "editTitle": "Edit FAQ"
   },
+  "testimonials": {
+    "title": "Testimonials",
+    "add": "Add Testimonial",
+    "search": "Search testimonials...",
+    "name": "Name",
+    "content": "Content",
+    "deleted": "Testimonial deleted",
+    "deleteFailed": "Failed to delete testimonial",
+    "createTitle": "Create Testimonial",
+    "editTitle": "Edit Testimonial"
+  },
   "contact": {
     "title": "Contact Messages",
     "search": "Search messages...",
@@ -371,6 +383,11 @@
     "position": "Position",
     "link": "Link",
     "sortOrder": "Sort Order",
+    "rating": "Rating",
+    "roleEn": "Role (EN)",
+    "roleAr": "Role (AR)",
+    "rolePlaceholder": "Customer, Client, etc.",
+    "avatar": "Avatar",
     "firstName": "First Name",
     "lastName": "Last Name",
     "email": "Email",
@@ -396,6 +413,7 @@
     "itemBlog": "Blog",
     "itemPage": "Page",
     "itemFaq": "FAQ",
+    "itemTestimonial": "Testimonial",
     "itemUser": "User"
   }
 }

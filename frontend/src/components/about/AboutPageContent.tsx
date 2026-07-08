@@ -1,9 +1,15 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
-import { Skeleton } from '@/components/ui/skeleton';
+
+const ABOUT_IMAGES = {
+  whoWeAre: '/about/about_1.jpeg',
+  visionMission: '/about/about_2.jpeg',
+  goals: '/about/about_3.jpeg',
+} as const;
 
 function SectionAccent({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
   return (
@@ -16,7 +22,15 @@ function SectionAccent({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
   );
 }
 
-function ImageSkeleton({ variant = 'red' }: { variant?: 'red' | 'light' }) {
+function SectionImage({
+  src,
+  alt,
+  variant = 'light',
+}: {
+  src: string;
+  alt: string;
+  variant?: 'red' | 'light';
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -27,10 +41,13 @@ function ImageSkeleton({ variant = 'red' }: { variant?: 'red' | 'light' }) {
         variant === 'red' ? 'border-primary-foreground/20' : 'border-primary/20'
       }`}
     >
-      <Skeleton
-        className={`h-full w-full rounded-none ${
-          variant === 'red' ? 'bg-primary-foreground/15' : 'bg-muted'
-        }`}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+        priority={false}
       />
     </motion.div>
   );
@@ -38,10 +55,14 @@ function ImageSkeleton({ variant = 'red' }: { variant?: 'red' | 'light' }) {
 
 function RedSection({
   title,
+  imageSrc,
+  imageAlt,
   children,
   reverse = false,
 }: {
   title: string;
+  imageSrc: string;
+  imageAlt: string;
   children: ReactNode;
   reverse?: boolean;
 }) {
@@ -52,7 +73,7 @@ function RedSection({
           reverse ? 'lg:[&>*:first-child]:order-2' : ''
         }`}
       >
-        <ImageSkeleton variant="red" />
+        <SectionImage src={imageSrc} alt={imageAlt} variant="red" />
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -74,10 +95,14 @@ function RedSection({
 
 function LightSection({
   title,
+  imageSrc,
+  imageAlt,
   children,
   reverse = false,
 }: {
   title: string;
+  imageSrc: string;
+  imageAlt: string;
   children: ReactNode;
   reverse?: boolean;
 }) {
@@ -88,7 +113,7 @@ function LightSection({
           reverse ? 'lg:[&>*:first-child]:order-2' : ''
         }`}
       >
-        <ImageSkeleton variant="light" />
+        <SectionImage src={imageSrc} alt={imageAlt} variant="light" />
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -116,13 +141,22 @@ export function AboutPageContent() {
 
   return (
     <div className="pb-0">
-      <LightSection title={t('whoWeAre.title')}>
+      <LightSection
+        title={t('whoWeAre.title')}
+        imageSrc={ABOUT_IMAGES.whoWeAre}
+        imageAlt={t('whoWeAre.title')}
+      >
         <p className="text-sm leading-relaxed text-muted-foreground sm:text-base md:text-lg">
           {t('whoWeAre.text')}
         </p>
       </LightSection>
 
-      <RedSection title={t('visionMission.title')} reverse>
+      <RedSection
+        title={t('visionMission.title')}
+        imageSrc={ABOUT_IMAGES.visionMission}
+        imageAlt={t('visionMission.title')}
+        reverse
+      >
         <div className="space-y-5 text-sm leading-relaxed text-primary-foreground/90 sm:text-base md:text-lg">
           <p>
             <span className="font-semibold text-secondary">{t('visionMission.visionLabel')}</span>{' '}
@@ -135,7 +169,12 @@ export function AboutPageContent() {
         </div>
       </RedSection>
 
-      <LightSection title={t('goals.title')} reverse>
+      <LightSection
+        title={t('goals.title')}
+        imageSrc={ABOUT_IMAGES.goals}
+        imageAlt={t('goals.title')}
+        reverse
+      >
         <ul className="space-y-3 text-sm leading-relaxed text-muted-foreground sm:space-y-4 sm:text-base">
           {goals.map((item) => (
             <li key={item} className="flex gap-2">
