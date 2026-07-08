@@ -48,7 +48,7 @@ export async function generateMetadata({
     },
     openGraph: {
       type: 'website',
-      locale: locale === 'ar' ? 'ar_SA' : 'en_US',
+      locale: locale === 'ar' ? 'ar_OM' : 'en_OM',
       siteName: locale === 'ar' ? 'الشِصر' : 'AL SHISR',
     },
   };

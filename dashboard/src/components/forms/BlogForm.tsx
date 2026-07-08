@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { useFormNavigation } from '@/hooks/use-form-navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -41,6 +42,7 @@ interface BlogFormProps {
 
 export function BlogForm({ blog, onSubmit }: BlogFormProps) {
   const router = useRouter();
+  const { navigateAfterSave } = useFormNavigation();
   const { toast } = useToast();
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -75,7 +77,7 @@ export function BlogForm({ blog, onSubmit }: BlogFormProps) {
           ? tForms('updated', { item: tForms('itemBlog') })
           : tForms('created', { item: tForms('itemBlog') }),
       });
-      router.push('/blogs');
+      await navigateAfterSave('/blogs', 'blogs');
     } catch {
       toast({ title: tForms('saveFailed', { item: tForms('itemBlog') }), variant: 'destructive' });
     }

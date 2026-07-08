@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { useFormNavigation } from '@/hooks/use-form-navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,6 +39,7 @@ interface SliderFormProps {
 
 export function SliderForm({ slider, onSubmit }: SliderFormProps) {
   const router = useRouter();
+  const { navigateAfterSave } = useFormNavigation();
   const { toast } = useToast();
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -67,7 +69,7 @@ export function SliderForm({ slider, onSubmit }: SliderFormProps) {
           ? tForms('updated', { item: tForms('itemSlider') })
           : tForms('created', { item: tForms('itemSlider') }),
       });
-      router.push('/sliders');
+      await navigateAfterSave('/sliders', 'sliders');
     } catch {
       toast({ title: tForms('saveFailed', { item: tForms('itemSlider') }), variant: 'destructive' });
     }

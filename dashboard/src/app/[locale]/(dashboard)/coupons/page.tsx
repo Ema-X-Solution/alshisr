@@ -11,7 +11,7 @@ import { DataTable } from '@/components/data-table/DataTable';
 import { Breadcrumb } from '@/components/layout/Breadcrumb';
 import { DeleteConfirmDialog } from '@/components/shared/DeleteConfirmDialog';
 import { couponsApi } from '@/lib/services';
-import { formatDate } from '@/lib/utils';
+import { formatCurrency, formatDate } from '@/lib/utils';
 import { useDeleteConfirm } from '@/hooks/use-delete-confirm';
 import type { Coupon } from '@/lib/types';
 
@@ -36,7 +36,7 @@ export default function CouponsPage() {
   const columns: ColumnDef<Coupon>[] = [
     { accessorKey: 'code', header: t('code'), cell: ({ row }) => <span className="font-mono font-medium">{row.original.code}</span> },
     { accessorKey: 'type', header: t('type') },
-    { accessorKey: 'value', header: t('value'), cell: ({ row }) => row.original.type === 'percentage' ? `${row.original.value}%` : `SAR ${row.original.value}` },
+    { accessorKey: 'value', header: t('value'), cell: ({ row }) => row.original.type === 'percentage' ? `${row.original.value}%` : formatCurrency(row.original.value) },
     { accessorKey: 'usageCount', header: 'Used', cell: ({ row }) => `${row.original.usageCount}${row.original.usageLimit ? `/${row.original.usageLimit}` : ''}` },
     {
       accessorKey: 'isActive',

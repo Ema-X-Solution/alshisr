@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { useFormNavigation } from '@/hooks/use-form-navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,6 +41,7 @@ interface CategoryFormProps {
 
 export function CategoryForm({ category, onSubmit }: CategoryFormProps) {
   const router = useRouter();
+  const { navigateAfterSave } = useFormNavigation();
   const { toast } = useToast();
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -72,7 +74,7 @@ export function CategoryForm({ category, onSubmit }: CategoryFormProps) {
           ? tForms('updated', { item: tForms('itemCategory') })
           : tForms('created', { item: tForms('itemCategory') }),
       });
-      router.push('/categories');
+      await navigateAfterSave('/categories', 'categories');
     } catch {
       toast({ title: tForms('saveFailed', { item: tForms('itemCategory') }), variant: 'destructive' });
     }

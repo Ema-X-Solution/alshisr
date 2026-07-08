@@ -1,4 +1,10 @@
-export function formatPrice(amount: number, currency = 'SAR', locale = 'ar-SA'): string {
+import { APP_REGION } from './region';
+
+export function formatPrice(
+  amount: number,
+  currency = APP_REGION.currency,
+  locale = APP_REGION.localeAr,
+): string {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,

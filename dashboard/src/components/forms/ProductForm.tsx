@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { useFormNavigation } from '@/hooks/use-form-navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -69,6 +70,7 @@ interface ProductFormProps {
 
 export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter();
+  const { navigateAfterSave } = useFormNavigation();
   const { toast } = useToast();
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -135,7 +137,7 @@ export function ProductForm({ product }: ProductFormProps) {
         await productsApi.create(payload);
         toast({ title: tForms('created', { item: tForms('itemProduct') }) });
       }
-      router.push('/products');
+      await navigateAfterSave('/products', ['products', 'categories', 'brands']);
     } catch {
       toast({ title: tForms('saveFailed', { item: tForms('itemProduct') }), variant: 'destructive' });
     }

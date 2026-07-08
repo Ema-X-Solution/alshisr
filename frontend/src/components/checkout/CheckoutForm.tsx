@@ -11,12 +11,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { PaymentMethods } from './PaymentMethods';
 import { ordersApi } from '@/lib/api/orders';
 import { couponsApi, shippingApi } from '@/lib/api/cms';
 import { extractErrorMessage } from '@/lib/api/client';
 import { useToast } from '@/components/ui/use-toast';
-import type { PaymentMethod } from '@/lib/types';
+import { APP_REGION } from '@alshisr/shared';
 
 const addressSchema = z.object({
   firstName: z.string().min(1),
@@ -45,7 +44,6 @@ export function CheckoutForm({ subtotal, onShippingChange, onDiscountChange }: C
   const tVal = useTranslations('validation');
   const router = useRouter();
   const { toast } = useToast();
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('COD');
   const [couponInput, setCouponInput] = useState('');
 
   const { data: zones } = useQuery({
@@ -59,7 +57,7 @@ export function CheckoutForm({ subtotal, onShippingChange, onDiscountChange }: C
     formState: { errors, isSubmitting },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(addressSchema),
-    defaultValues: { country: 'SA' },
+    defaultValues: { country: APP_REGION.countryCode },
   });
 
   const placeOrderMutation = useMutation({
@@ -109,7 +107,7 @@ export function CheckoutForm({ subtotal, onShippingChange, onDiscountChange }: C
     onShippingChange(shippingCost);
 
     await placeOrderMutation.mutateAsync({
-      paymentMethod,
+      paymentMethod: 'COD',
       shippingAddress: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -156,8 +154,6 @@ export function CheckoutForm({ subtotal, onShippingChange, onDiscountChange }: C
           ))}
         </div>
       </div>
-
-      <PaymentMethods value={paymentMethod} onChange={setPaymentMethod} />
 
       <div>
         <Label>{t('couponCode')}</Label>

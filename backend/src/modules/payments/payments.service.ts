@@ -35,11 +35,11 @@ export class PaymentsService {
 
     const order = await this.getOrderForPayment(dto.orderId, userId, PaymentMethod.STRIPE);
 
-    const amountInHalalas = Math.round(Number(order.total) * 100);
+    const amountInBaisa = Math.round(Number(order.total) * 1000);
 
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: amountInHalalas,
-      currency: 'sar',
+      amount: amountInBaisa,
+      currency: 'omr',
       metadata: { orderId: order.id, orderNumber: order.orderNumber },
       automatic_payment_methods: { enabled: true },
     });
@@ -53,7 +53,7 @@ export class PaymentsService {
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
       amount: Number(order.total),
-      currency: 'SAR',
+      currency: 'OMR',
     };
   }
 
@@ -70,7 +70,7 @@ export class PaymentsService {
       CustomerName: `${order.user.firstName} ${order.user.lastName}`,
       CustomerEmail: order.user.email,
       CustomerMobile: order.user.phone || '',
-      DisplayCurrencyIso: 'SAR',
+      DisplayCurrencyIso: 'OMR',
       CallBackUrl: dto.callbackUrl || `${frontendUrl}/checkout/callback`,
       ErrorUrl: dto.errorUrl || `${frontendUrl}/checkout/error`,
       Language: 'ar',

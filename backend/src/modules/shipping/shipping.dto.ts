@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 export class CalculateShippingDto {
-  @ApiProperty({ example: 'SA' })
+  @ApiProperty({ example: 'OM' })
   @IsString()
   country: string;
 

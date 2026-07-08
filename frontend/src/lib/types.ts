@@ -1,4 +1,5 @@
 import type { Locale } from '@/i18n/routing';
+import { APP_REGION, getRegionLocale } from '@alshisr/shared';
 
 export interface ApiResponse<T> {
   success: boolean;
@@ -363,18 +364,18 @@ export function localizedField(
 }
 
 export function formatPrice(amount: number, locale: Locale = 'ar'): string {
-  return new Intl.NumberFormat(locale === 'ar' ? 'ar-SA' : 'en-SA', {
+  return new Intl.NumberFormat(getRegionLocale(locale), {
     style: 'currency',
-    currency: 'SAR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
+    currency: APP_REGION.currency,
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
   }).format(amount);
 }
 
 export function formatPriceAmount(amount: number, locale: Locale = 'ar'): string {
-  return new Intl.NumberFormat(locale === 'ar' ? 'ar-SA' : 'en-SA', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
+  return new Intl.NumberFormat(getRegionLocale(locale), {
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3,
   }).format(amount);
 }
 

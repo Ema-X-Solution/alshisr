@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { useFormNavigation } from '@/hooks/use-form-navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,6 +37,7 @@ interface BannerFormProps {
 
 export function BannerForm({ banner, onSubmit }: BannerFormProps) {
   const router = useRouter();
+  const { navigateAfterSave } = useFormNavigation();
   const { toast } = useToast();
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -63,7 +65,7 @@ export function BannerForm({ banner, onSubmit }: BannerFormProps) {
           ? tForms('updated', { item: tForms('itemBanner') })
           : tForms('created', { item: tForms('itemBanner') }),
       });
-      router.push('/banners');
+      await navigateAfterSave('/banners', 'banners');
     } catch {
       toast({ title: tForms('saveFailed', { item: tForms('itemBanner') }), variant: 'destructive' });
     }

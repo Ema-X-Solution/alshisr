@@ -3,7 +3,7 @@
 import { useLocale } from 'next-intl';
 import type { Locale } from '@/i18n/routing';
 import { formatPriceAmount } from '@/lib/types';
-import { SarIcon } from '@/components/shared/SarIcon';
+import { OmrIcon } from '@/components/shared/SarIcon';
 import { cn } from '@/lib/utils/cn';
 
 interface PriceProps {
@@ -38,7 +38,7 @@ export function Price({
 
   return (
     <span className={cn('inline-flex items-center gap-1 font-semibold text-primary', textSizes[size], className)}>
-      <SarIcon size={iconSizes[size]} className={cn('text-primary', iconClassName)} />
+      <OmrIcon size={iconSizes[size]} locale={locale} className={cn('text-primary', iconClassName)} />
       <span>{formatPriceAmount(amount, locale)}</span>
     </span>
   );
@@ -56,7 +56,7 @@ export function ComparePrice({ amount, className, locale: localeProp }: CompareP
 
   return (
     <span className={cn('inline-flex items-center gap-0.5 text-sm text-muted-foreground line-through', className)}>
-      <SarIcon size="xs" className="text-muted-foreground" />
+      <OmrIcon size="xs" locale={locale} className="text-muted-foreground" />
       <span>{formatPriceAmount(amount, locale)}</span>
     </span>
   );

@@ -43,7 +43,7 @@ export class AddressSnapshotDto {
   @IsString()
   state?: string;
 
-  @ApiProperty({ default: 'SA' })
+  @ApiProperty({ default: 'OM' })
   @IsString()
   country: string;
 

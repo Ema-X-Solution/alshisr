@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { useFormNavigation } from '@/hooks/use-form-navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -39,6 +40,7 @@ interface CouponFormProps {
 
 export function CouponForm({ coupon, onSubmit }: CouponFormProps) {
   const router = useRouter();
+  const { navigateAfterSave } = useFormNavigation();
   const { toast } = useToast();
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -68,7 +70,7 @@ export function CouponForm({ coupon, onSubmit }: CouponFormProps) {
           ? tForms('updated', { item: tForms('itemCoupon') })
           : tForms('created', { item: tForms('itemCoupon') }),
       });
-      router.push('/coupons');
+      await navigateAfterSave('/coupons', 'coupons');
     } catch {
       toast({ title: tForms('saveFailed', { item: tForms('itemCoupon') }), variant: 'destructive' });
     }

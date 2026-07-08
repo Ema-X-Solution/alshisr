@@ -53,7 +53,7 @@ export class CreateAddressDto {
   @ApiPropertyOptional() @IsOptional() @IsString() addressLine2?: string;
   @ApiProperty() @IsString() city: string;
   @ApiPropertyOptional() @IsOptional() @IsString() state?: string;
-  @ApiPropertyOptional({ default: 'SA' }) @IsOptional() @IsString() country?: string;
+  @ApiPropertyOptional({ default: 'OM' }) @IsOptional() @IsString() country?: string;
   @ApiProperty() @IsString() postalCode: string;
   @ApiPropertyOptional({ default: false }) @IsOptional() @IsBoolean() isDefault?: boolean;
 }

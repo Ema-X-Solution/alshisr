@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { useFormNavigation } from '@/hooks/use-form-navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -36,6 +37,7 @@ interface BrandFormProps {
 
 export function BrandForm({ brand, onSubmit }: BrandFormProps) {
   const router = useRouter();
+  const { navigateAfterSave } = useFormNavigation();
   const { toast } = useToast();
   const tCommon = useTranslations('common');
   const tForms = useTranslations('forms');
@@ -62,7 +64,7 @@ export function BrandForm({ brand, onSubmit }: BrandFormProps) {
           ? tForms('updated', { item: tForms('itemBrand') })
           : tForms('created', { item: tForms('itemBrand') }),
       });
-      router.push('/brands');
+      await navigateAfterSave('/brands', 'brands');
     } catch {
       toast({ title: tForms('saveFailed', { item: tForms('itemBrand') }), variant: 'destructive' });
     }

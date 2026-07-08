@@ -401,39 +401,39 @@ async function main() {
 
   // Shipping zones
   const zone = await prisma.shippingZone.upsert({
-    where: { id: 'sa-zone' },
+    where: { id: 'om-zone' },
     update: {},
     create: {
-      id: 'sa-zone',
-      name: 'Saudi Arabia',
-      nameAr: 'المملكة العربية السعودية',
-      countries: ['SA'],
+      id: 'om-zone',
+      name: 'Oman',
+      nameAr: 'سلطنة عمان',
+      countries: ['OM'],
       isActive: true,
     },
   });
 
   await prisma.shippingRate.upsert({
-    where: { id: 'sa-standard' },
+    where: { id: 'om-standard' },
     update: {},
     create: {
-      id: 'sa-standard',
+      id: 'om-standard',
       zoneId: zone.id,
       name: 'Standard Shipping',
       nameAr: 'شحن عادي',
-      price: 25,
+      price: 2,
       isActive: true,
     },
   });
 
   await prisma.shippingRate.upsert({
-    where: { id: 'sa-express' },
+    where: { id: 'om-express' },
     update: {},
     create: {
-      id: 'sa-express',
+      id: 'om-express',
       zoneId: zone.id,
       name: 'Express Shipping',
       nameAr: 'شحن سريع',
-      price: 50,
+      price: 5,
       isActive: true,
     },
   });
@@ -450,8 +450,8 @@ async function main() {
     { group: 'colors', key: 'background', value: '#FAF7F2', type: 'string' },
     { group: 'colors', key: 'text', value: '#222222', type: 'string' },
     { group: 'contact', key: 'email', value: 'info@alshisr.com', type: 'string' },
-    { group: 'contact', key: 'phone', value: '+966 11 234 5678', type: 'string' },
-    { group: 'contact', key: 'address', value: 'Riyadh, Saudi Arabia', type: 'string' },
+    { group: 'contact', key: 'phone', value: '+968 9000 0000', type: 'string' },
+    { group: 'contact', key: 'address', value: 'Muscat, Sultanate of Oman', type: 'string' },
     { group: 'social', key: 'instagram', value: 'https://instagram.com/alshisr', type: 'string' },
     { group: 'social', key: 'twitter', value: 'https://twitter.com/alshisr', type: 'string' },
     { group: 'social', key: 'facebook', value: 'https://facebook.com/alshisr', type: 'string' },

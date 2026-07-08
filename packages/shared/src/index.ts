@@ -3,3 +3,4 @@ export * from './constants';
 export * from './brand';
 export * from './api';
 export * from './utils';
+export * from './region';

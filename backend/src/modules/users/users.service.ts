@@ -99,7 +99,7 @@ export class UsersService {
     }
 
     return this.prisma.address.create({
-      data: { ...dto, userId, country: dto.country ?? 'SA' },
+      data: { ...dto, userId, country: dto.country ?? 'OM' },
     });
   }
 

@@ -380,7 +380,7 @@ model Address {
   addressLine2 String?
   city         String
   state        String?
-  country      String   @default("SA")
+  country      String   @default("OM")
   postalCode   String
   isDefault    Boolean  @default(false)
   createdAt    DateTime @default(now())

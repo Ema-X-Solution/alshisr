@@ -20,7 +20,7 @@ interface RevenueChartProps {
 export function RevenueChart({ data }: RevenueChartProps) {
   const t = useTranslations('dashboard');
   const locale = useLocale();
-  const dateLocale = locale === 'ar' ? 'ar-SA' : 'en-US';
+  const dateLocale = locale === 'ar' ? 'ar-OM' : 'en-OM';
 
   const chartData = data.map((d) => ({
     ...d,
