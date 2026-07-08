@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { FiSearch, FiShoppingBag, FiHeart, FiUser, FiMenu, FiX } from 'react-icons/fi';
+import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -54,8 +55,12 @@ export function Header() {
   };
 
   const switchLocale = (newLocale: 'ar' | 'en') => {
+    if (newLocale === locale) return;
     router.replace(pathname, { locale: newLocale });
   };
+
+  const dropdownContentClass =
+    'w-48 border-border bg-background/95 text-foreground shadow-lg backdrop-blur-sm';
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -86,13 +91,30 @@ export function Header() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="hidden text-xs uppercase md:flex">
-                {locale === 'ar' ? 'EN' : 'عربي'}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hidden text-xs uppercase md:flex"
+                aria-label={t('language')}
+              >
+                {locale === 'ar' ? t('english') : t('arabic')}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => switchLocale('ar')}>العربية</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => switchLocale('en')}>English</DropdownMenuItem>
+            <DropdownMenuContent align="end" className={dropdownContentClass}>
+              <DropdownMenuItem
+                onClick={() => switchLocale('ar')}
+                className="justify-between gap-2"
+              >
+                <span>{t('arabic')}</span>
+                {locale === 'ar' && <Check className="h-4 w-4 shrink-0 text-primary" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => switchLocale('en')}
+                className="justify-between gap-2"
+              >
+                <span>{t('english')}</span>
+                {locale === 'en' && <Check className="h-4 w-4 shrink-0 text-primary" />}
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -124,7 +146,7 @@ export function Header() {
                 <FiUser className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent align="end" className={dropdownContentClass}>
               {isAuthenticated ? (
                 <>
                   <DropdownMenuItem className="text-muted-foreground" disabled>
@@ -132,13 +154,19 @@ export function Header() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/profile">{t('profile')}</Link>
+                    <Link href="/profile" className="w-full cursor-pointer">
+                      {t('profile')}
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/orders">{t('orders')}</Link>
+                    <Link href="/orders" className="w-full cursor-pointer">
+                      {t('orders')}
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/notifications">{t('notifications')}</Link>
+                    <Link href="/notifications" className="w-full cursor-pointer">
+                      {t('notifications')}
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => logout()}>{t('logout')}</DropdownMenuItem>
@@ -146,10 +174,14 @@ export function Header() {
               ) : (
                 <>
                   <DropdownMenuItem asChild>
-                    <Link href="/login">{t('login')}</Link>
+                    <Link href="/login" className="w-full cursor-pointer">
+                      {t('login')}
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/register">{t('register')}</Link>
+                    <Link href="/register" className="w-full cursor-pointer">
+                      {t('register')}
+                    </Link>
                   </DropdownMenuItem>
                 </>
               )}
@@ -182,7 +214,7 @@ export function Header() {
                   onClick={() => switchLocale(locale === 'ar' ? 'en' : 'ar')}
                   className="text-start text-lg font-medium text-muted-foreground hover:text-primary"
                 >
-                  {locale === 'ar' ? 'English' : 'العربية'}
+                  {locale === 'ar' ? t('english') : t('arabic')}
                 </button>
               </nav>
             </SheetContent>

@@ -25,5 +25,9 @@ interface FormActionsProps {
 }
 
 export function FormActions({ children }: FormActionsProps) {
-  return <div className="flex items-center gap-3 justify-end">{children}</div>;
+  return (
+    <div className="sticky bottom-0 z-10 -mx-4 border-t bg-background/95 px-4 py-4 backdrop-blur supports-[backdrop-filter]:bg-background/80 lg:-mx-6 lg:px-6">
+      <div className="flex items-center justify-end gap-3">{children}</div>
+    </div>
+  );
 }

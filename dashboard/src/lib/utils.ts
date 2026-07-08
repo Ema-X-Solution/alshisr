@@ -15,8 +15,8 @@ export function formatCurrency(amount: number, currency = APP_REGION.currency, l
   }).format(amount);
 }
 
-export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions) {
-  return new Intl.DateTimeFormat(APP_REGION.localeEn, {
+export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions, locale = APP_REGION.localeEn) {
+  return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -24,11 +24,13 @@ export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOpt
   }).format(new Date(date));
 }
 
-export function formatDateTime(date: string | Date) {
+export function formatDateTime(date: string | Date, locale: string = APP_REGION.localeEn) {
+  const localeTag =
+    locale === 'ar' ? APP_REGION.localeAr : locale === 'en' ? APP_REGION.localeEn : locale;
   return formatDate(date, {
     hour: '2-digit',
     minute: '2-digit',
-  });
+  }, localeTag);
 }
 
 export function slugify(text: string) {

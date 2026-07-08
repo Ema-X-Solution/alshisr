@@ -42,7 +42,9 @@
     "wishlist": "Wishlist",
     "cart": "Cart",
     "notifications": "Notifications",
-    "language": "Language"
+    "language": "Language",
+    "arabic": "العربية",
+    "english": "English"
   },
   "footer": {
     "about": "About AL SHISR",

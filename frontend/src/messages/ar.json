@@ -42,7 +42,9 @@
     "wishlist": "المفضلة",
     "cart": "السلة",
     "notifications": "الإشعارات",
-    "language": "اللغة"
+    "language": "اللغة",
+    "arabic": "العربية",
+    "english": "English"
   },
   "footer": {
     "about": "عن الشِصر",

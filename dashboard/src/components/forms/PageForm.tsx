@@ -11,7 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FormSection, FormActions } from './FormSection';
+import { RichTextEditor } from './RichTextEditor';
 import { useToast } from '@/hooks/use-toast';
 import { LoadingSpinner } from '@/components/ui/loading';
 import type { Page } from '@/lib/types';
@@ -71,25 +73,87 @@ export function PageForm({ page, onSubmit }: PageFormProps) {
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-      <FormSection title="Page Content">
+      <FormSection title={tForms('basicInfo')}>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>{tForms('titleEn')}</Label><Input {...register('title')} /></div>
-          <div className="space-y-2"><Label>{tForms('titleAr')}</Label><Input dir="rtl" {...register('titleAr')} /></div>
-          <div className="space-y-2"><Label>{tForms('slug')}</Label><Input {...register('slug')} /></div>
-          <div className="flex items-center gap-2 pt-6">
-            <Switch checked={watch('isPublished')} onCheckedChange={(v) => setValue('isPublished', v)} />
-            <Label>{tCommon('published')}</Label>
+          <div className="space-y-2">
+            <Label htmlFor="title">{tForms('titleEn')}</Label>
+            <Input id="title" {...register('title')} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="titleAr">{tForms('titleAr')}</Label>
+            <Input id="titleAr" dir="rtl" {...register('titleAr')} />
           </div>
         </div>
-        <div className="space-y-2"><Label>{tForms('contentEn')}</Label><Textarea rows={10} {...register('content')} /></div>
-        <div className="space-y-2"><Label>{tForms('contentAr')}</Label><Textarea dir="rtl" rows={10} {...register('contentAr')} /></div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>Meta Title</Label><Input {...register('metaTitle')} /></div>
-          <div className="space-y-2 sm:col-span-2"><Label>Meta Description</Label><Textarea {...register('metaDescription')} /></div>
+          <div className="space-y-2">
+            <Label htmlFor="slug">{tForms('slug')}</Label>
+            <Input
+              id="slug"
+              placeholder={tForms('slugPlaceholder')}
+              className="font-mono text-sm"
+              {...register('slug')}
+            />
+          </div>
+          <div className="flex items-center gap-3 rounded-lg border bg-muted/40 px-4 py-3 sm:mt-6">
+            <Switch
+              id="isPublished"
+              checked={watch('isPublished')}
+              onCheckedChange={(v) => setValue('isPublished', v)}
+            />
+            <Label htmlFor="isPublished" className="cursor-pointer font-medium">
+              {tCommon('published')}
+            </Label>
+          </div>
         </div>
       </FormSection>
+
+      <FormSection title={tForms('pageContent')} description={tForms('contentHtmlHint')}>
+        <Tabs defaultValue="en" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 sm:w-auto sm:inline-flex">
+            <TabsTrigger value="en">{tForms('contentEn')}</TabsTrigger>
+            <TabsTrigger value="ar">{tForms('contentAr')}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="en" className="mt-4">
+            <RichTextEditor
+              value={watch('content')}
+              onChange={(html) => setValue('content', html, { shouldDirty: true, shouldValidate: true })}
+              dir="ltr"
+              placeholder="Start writing your page content..."
+            />
+          </TabsContent>
+          <TabsContent value="ar" className="mt-4">
+            <RichTextEditor
+              value={watch('contentAr')}
+              onChange={(html) => setValue('contentAr', html, { shouldDirty: true, shouldValidate: true })}
+              dir="rtl"
+              placeholder="ابدأ بكتابة محتوى الصفحة..."
+            />
+          </TabsContent>
+        </Tabs>
+      </FormSection>
+
+      <FormSection title={tForms('seo')}>
+        <div className="grid gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="metaTitle">{tForms('metaTitle')}</Label>
+            <Input id="metaTitle" {...register('metaTitle')} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="metaDescription">{tForms('metaDescription')}</Label>
+            <Textarea
+              id="metaDescription"
+              rows={3}
+              className="resize-y"
+              {...register('metaDescription')}
+            />
+          </div>
+        </div>
+      </FormSection>
+
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
+          {tCommon('cancel')}
+        </Button>
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? <LoadingSpinner size="sm" /> : page ? tCommon('update') : tCommon('create')}
         </Button>

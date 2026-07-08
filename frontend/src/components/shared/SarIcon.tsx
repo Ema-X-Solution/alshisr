@@ -1,38 +1,30 @@
-'use client';
-
-import { useLocale } from 'next-intl';
-import type { Locale } from '@/i18n/routing';
-import { APP_REGION } from '@alshisr/shared';
-import { formatPriceAmount } from '@/lib/types';
 import { cn } from '@/lib/utils/cn';
 
-interface OmrIconProps {
+interface SarIconProps {
   className?: string;
   size?: 'xs' | 'sm' | 'md' | 'lg';
-  locale?: Locale;
 }
 
-const textSizes = {
-  xs: 'text-[10px]',
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-base',
+const sizes = {
+  xs: 'h-2.5 w-5',
+  sm: 'h-3 w-6',
+  md: 'h-3.5 w-7',
+  lg: 'h-4 w-8',
 };
 
-export function OmrIcon({ className, size = 'sm', locale: localeProp }: OmrIconProps) {
-  const hookLocale = useLocale() as Locale;
-  const locale = localeProp ?? hookLocale;
-  const label = locale === 'ar' ? APP_REGION.currencyLabelAr : APP_REGION.currencyLabelEn;
-
+export function SarIcon({ className, size = 'sm' }: SarIconProps) {
   return (
-    <span
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 729.6 365.93"
       aria-hidden="true"
-      className={cn('inline-block shrink-0 font-semibold leading-none', textSizes[size], className)}
+      focusable="false"
+      className={cn('inline-block shrink-0 align-[-0.125em]', sizes[size], className)}
     >
-      {label}
-    </span>
+      <path
+        fill="currentColor"
+        d="M241.67,213.77c-.63-49.2,11.44-95.41,35.76-137.75C313.47,13.28,353.02-6.48,421.55,28.87c10.67,5.5,53.6,35.43,57.81,44.54,5.03,10.87-27.48,103.87-29.11,122.3-34.69-37.51-99.37-98.66-154.85-69.62-45.05,23.58-12.02,62.54,11.46,87.68h409.36l-26.41,47.64h-332.5c-.31,1.8.87,3.3,2.53,4.6,12.44,9.72,80.97,39.54,94.75,39.54h210.71l-26.89,48.94H13.37l26.91-48.94h253.38l-37.11-44.13H64.75l26.41-47.64h150.51Z"
+      />
+    </svg>
   );
 }
-
-// Backward-compatible alias
-export { OmrIcon as SarIcon };

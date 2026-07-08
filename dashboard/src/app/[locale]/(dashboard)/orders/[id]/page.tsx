@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,11 +16,14 @@ import { ordersApi } from '@/lib/services';
 import { formatCurrency, formatDateTime } from '@/lib/utils';
 import { ORDER_STATUS_COLORS, ORDER_STATUSES } from '@/lib/constants';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const t = useTranslations('orders');
+  const tCommon = useTranslations('common');
   const tNav = useTranslations('nav');
   const tStatus = useTranslations('status');
+  const locale = useLocale();
   const { id } = use(params);
   const [status, setStatus] = useState('');
   const [note, setNote] = useState('');
@@ -50,52 +53,59 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   });
 
   if (isLoading) return <PageLoader />;
-  if (!order) return <p>Order not found</p>;
+  if (!order) return <p>{tCommon('notFound')}</p>;
 
   return (
     <div className="space-y-6">
       <Breadcrumb items={[{ label: tNav('dashboard'), href: '/' }, { label: t('title'), href: '/orders' }, { label: `#${order.orderNumber}` }]} />
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <h2 className="text-2xl font-bold">{t('detailTitle')} #{order.orderNumber}</h2>
         <Badge className={ORDER_STATUS_COLORS[order.status]} variant="outline">{tStatus(order.status)}</Badge>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6 lg:col-span-2">
           <Card>
-            <CardHeader><CardTitle className="text-base">Order Items</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-base">{t('orderItems')}</CardTitle></CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {order.items?.map((item) => (
-                  <div key={item.id} className="flex justify-between border-b pb-3 last:border-0">
+                  <div key={item.id} className="flex justify-between gap-4 border-b pb-3 last:border-0">
                     <div>
                       <p className="font-medium">{item.name}</p>
-                      <p className="text-sm text-muted-foreground">SKU: {item.sku} × {item.quantity}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {t('skuQuantity', { sku: item.sku, quantity: item.quantity })}
+                      </p>
                     </div>
-                    <p className="font-medium">{formatCurrency(item.total)}</p>
+                    <p className="shrink-0 font-medium">{formatCurrency(item.total)}</p>
                   </div>
                 ))}
               </div>
               <div className="mt-4 space-y-1 border-t pt-4 text-sm">
-                <div className="flex justify-between"><span>Subtotal</span><span>{formatCurrency(order.subtotal)}</span></div>
-                <div className="flex justify-between"><span>Shipping</span><span>{formatCurrency(order.shippingCost)}</span></div>
-                <div className="flex justify-between"><span>Discount</span><span>-{formatCurrency(order.discount)}</span></div>
-                <div className="flex justify-between font-bold text-base"><span>Total</span><span>{formatCurrency(order.total)}</span></div>
+                <div className="flex justify-between"><span>{t('subtotal')}</span><span>{formatCurrency(order.subtotal)}</span></div>
+                <div className="flex justify-between"><span>{t('shipping')}</span><span>{formatCurrency(order.shippingCost)}</span></div>
+                <div className="flex justify-between"><span>{t('discount')}</span><span>-{formatCurrency(order.discount)}</span></div>
+                <div className="flex justify-between text-base font-bold"><span>{t('total')}</span><span>{formatCurrency(order.total)}</span></div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader><CardTitle className="text-base">Timeline</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-base">{t('timeline')}</CardTitle></CardHeader>
             <CardContent>
-              <div className="relative space-y-4 pl-6 before:absolute before:left-2 before:top-2 before:h-[calc(100%-16px)] before:w-0.5 before:bg-border">
+              <div
+                className={cn(
+                  'relative space-y-4 ps-6 before:absolute before:top-2 before:h-[calc(100%-16px)] before:w-0.5 before:bg-border',
+                  'before:start-2',
+                )}
+              >
                 {timeline.map((event) => (
                   <div key={event.id} className="relative">
-                    <div className="absolute -left-6 top-1 h-3 w-3 rounded-full bg-primary" />
+                    <div className="absolute -start-6 top-1 h-3 w-3 rounded-full bg-primary" />
                     <div>
-                      <p className="font-medium text-sm">{event.status.replace(/_/g, ' ')}</p>
+                      <p className="text-sm font-medium">{tStatus(event.status)}</p>
                       {event.note && <p className="text-sm text-muted-foreground">{event.note}</p>}
-                      <p className="text-xs text-muted-foreground">{formatDateTime(event.createdAt)}</p>
+                      <p className="text-xs text-muted-foreground">{formatDateTime(event.createdAt, locale)}</p>
                     </div>
                   </div>
                 ))}
@@ -106,8 +116,8 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
         <div className="space-y-6">
           <Card>
-            <CardHeader><CardTitle className="text-base">Customer</CardTitle></CardHeader>
-            <CardContent className="text-sm space-y-1">
+            <CardHeader><CardTitle className="text-base">{t('customer')}</CardTitle></CardHeader>
+            <CardContent className="space-y-1 text-sm">
               {order.user && (
                 <>
                   <p className="font-medium">{order.user.firstName} {order.user.lastName}</p>
@@ -119,7 +129,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
           {order.shippingAddress && (
             <Card>
-              <CardHeader><CardTitle className="text-base">Shipping Address</CardTitle></CardHeader>
+              <CardHeader><CardTitle className="text-base">{t('shippingAddress')}</CardTitle></CardHeader>
               <CardContent className="text-sm">
                 <p>{order.shippingAddress.firstName} {order.shippingAddress.lastName}</p>
                 <p>{order.shippingAddress.addressLine1}</p>
@@ -133,7 +143,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             <CardHeader><CardTitle className="text-base">{t('updateStatus')}</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Status</Label>
+                <Label>{tCommon('status')}</Label>
                 <Select value={status || order.status} onValueChange={setStatus}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -142,12 +152,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Tracking Number</Label>
+                <Label>{t('trackingNumber')}</Label>
                 <Input value={trackingNumber} onChange={(e) => setTrackingNumber(e.target.value)} placeholder={order.trackingNumber || ''} />
               </div>
               <div className="space-y-2">
-                <Label>Note</Label>
-                <Textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Optional note..." />
+                <Label>{t('note')}</Label>
+                <Textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder={t('notePlaceholder')} />
               </div>
               <Button className="w-full" onClick={() => updateMutation.mutate()} disabled={updateMutation.isPending}>
                 {t('updateStatus')}
