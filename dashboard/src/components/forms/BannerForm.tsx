@@ -3,7 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,6 +37,8 @@ interface BannerFormProps {
 export function BannerForm({ banner, onSubmit }: BannerFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const tCommon = useTranslations('common');
+  const tForms = useTranslations('forms');
 
   const { register, handleSubmit, watch, setValue, formState: { isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -55,10 +58,14 @@ export function BannerForm({ banner, onSubmit }: BannerFormProps) {
   const handleFormSubmit = async (data: FormData) => {
     try {
       await onSubmit(data);
-      toast({ title: banner ? 'Banner updated' : 'Banner created' });
+      toast({
+        title: banner
+          ? tForms('updated', { item: tForms('itemBanner') })
+          : tForms('created', { item: tForms('itemBanner') }),
+      });
       router.push('/banners');
     } catch {
-      toast({ title: 'Failed to save banner', variant: 'destructive' });
+      toast({ title: tForms('saveFailed', { item: tForms('itemBanner') }), variant: 'destructive' });
     }
   };
 
@@ -66,24 +73,24 @@ export function BannerForm({ banner, onSubmit }: BannerFormProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <FormSection title="Banner Details">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>Title (EN)</Label><Input {...register('title')} /></div>
-          <div className="space-y-2"><Label>Title (AR)</Label><Input dir="rtl" {...register('titleAr')} /></div>
-          <div className="space-y-2"><Label>Subtitle (EN)</Label><Input {...register('subtitle')} /></div>
-          <div className="space-y-2"><Label>Subtitle (AR)</Label><Input dir="rtl" {...register('subtitleAr')} /></div>
-          <div className="space-y-2"><Label>Link URL</Label><Input {...register('link')} /></div>
-          <div className="space-y-2"><Label>Position</Label><Input {...register('position')} placeholder="home, category, etc." /></div>
-          <div className="space-y-2"><Label>Sort Order</Label><Input type="number" {...register('sortOrder')} /></div>
+          <div className="space-y-2"><Label>{tForms('titleEn')}</Label><Input {...register('title')} /></div>
+          <div className="space-y-2"><Label>{tForms('titleAr')}</Label><Input dir="rtl" {...register('titleAr')} /></div>
+          <div className="space-y-2"><Label>{tForms('subtitleEn')}</Label><Input {...register('subtitle')} /></div>
+          <div className="space-y-2"><Label>{tForms('subtitleAr')}</Label><Input dir="rtl" {...register('subtitleAr')} /></div>
+          <div className="space-y-2"><Label>{tForms('link')}</Label><Input {...register('link')} /></div>
+          <div className="space-y-2"><Label>{tForms('position')}</Label><Input {...register('position')} placeholder="home, category, etc." /></div>
+          <div className="space-y-2"><Label>{tForms('sortOrder')}</Label><Input type="number" {...register('sortOrder')} /></div>
           <div className="flex items-center gap-2 pt-6">
             <Switch checked={watch('isActive')} onCheckedChange={(v) => setValue('isActive', v)} />
-            <Label>Active</Label>
+            <Label>{tCommon('active')}</Label>
           </div>
         </div>
         <ImageUpload value={watch('image')} onChange={(url) => setValue('image', url)} folder="banners" label="Banner Image" />
       </FormSection>
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <LoadingSpinner size="sm" /> : banner ? 'Update' : 'Create'}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : banner ? tCommon('update') : tCommon('create')}
         </Button>
       </FormActions>
     </form>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
 import {
   BarChart,
   Bar,
@@ -16,15 +17,19 @@ interface OrdersChartProps {
 }
 
 export function OrdersChart({ data }: OrdersChartProps) {
+  const t = useTranslations('dashboard');
+  const locale = useLocale();
+  const dateLocale = locale === 'ar' ? 'ar-SA' : 'en-US';
+
   const chartData = data.map((d) => ({
     ...d,
-    date: new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(d.date).toLocaleDateString(dateLocale, { month: 'short', day: 'numeric' }),
   }));
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Orders (Last 30 Days)</CardTitle>
+        <CardTitle className="text-base">{t('ordersChart')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">

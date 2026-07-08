@@ -3,7 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -41,6 +42,8 @@ interface BlogFormProps {
 export function BlogForm({ blog, onSubmit }: BlogFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const tCommon = useTranslations('common');
+  const tForms = useTranslations('forms');
 
   const { register, handleSubmit, watch, setValue, formState: { isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -67,10 +70,14 @@ export function BlogForm({ blog, onSubmit }: BlogFormProps) {
         ...data,
         tags: data.tags ? data.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
       });
-      toast({ title: blog ? 'Blog updated' : 'Blog created' });
+      toast({
+        title: blog
+          ? tForms('updated', { item: tForms('itemBlog') })
+          : tForms('created', { item: tForms('itemBlog') }),
+      });
       router.push('/blogs');
     } catch {
-      toast({ title: 'Failed to save blog', variant: 'destructive' });
+      toast({ title: tForms('saveFailed', { item: tForms('itemBlog') }), variant: 'destructive' });
     }
   };
 
@@ -78,29 +85,29 @@ export function BlogForm({ blog, onSubmit }: BlogFormProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <FormSection title="Blog Post">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>Title (EN)</Label><Input {...register('title')} /></div>
-          <div className="space-y-2"><Label>Title (AR)</Label><Input dir="rtl" {...register('titleAr')} /></div>
-          <div className="space-y-2"><Label>Slug</Label><Input {...register('slug')} /></div>
+          <div className="space-y-2"><Label>{tForms('titleEn')}</Label><Input {...register('title')} /></div>
+          <div className="space-y-2"><Label>{tForms('titleAr')}</Label><Input dir="rtl" {...register('titleAr')} /></div>
+          <div className="space-y-2"><Label>{tForms('slug')}</Label><Input {...register('slug')} /></div>
           <div className="space-y-2"><Label>Author</Label><Input {...register('author')} /></div>
           <div className="flex items-center gap-2 pt-6">
             <Switch checked={watch('isPublished')} onCheckedChange={(v) => setValue('isPublished', v)} />
-            <Label>Published</Label>
+            <Label>{tCommon('published')}</Label>
           </div>
         </div>
         <ImageUpload value={watch('image')} onChange={(url) => setValue('image', url)} folder="blogs" label="Featured Image" />
         <div className="space-y-2"><Label>Excerpt (EN)</Label><Textarea {...register('excerpt')} /></div>
-        <div className="space-y-2"><Label>Content (EN)</Label><Textarea rows={8} {...register('content')} /></div>
-        <div className="space-y-2"><Label>Content (AR)</Label><Textarea dir="rtl" rows={8} {...register('contentAr')} /></div>
+        <div className="space-y-2"><Label>{tForms('contentEn')}</Label><Textarea rows={8} {...register('content')} /></div>
+        <div className="space-y-2"><Label>{tForms('contentAr')}</Label><Textarea dir="rtl" rows={8} {...register('contentAr')} /></div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2"><Label>Meta Title</Label><Input {...register('metaTitle')} /></div>
-          <div className="space-y-2"><Label>Tags</Label><Input {...register('tags')} placeholder="luxury, fashion" /></div>
+          <div className="space-y-2"><Label>{tForms('tags')}</Label><Input {...register('tags')} placeholder="luxury, fashion" /></div>
           <div className="space-y-2 sm:col-span-2"><Label>Meta Description</Label><Textarea {...register('metaDescription')} /></div>
         </div>
       </FormSection>
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <LoadingSpinner size="sm" /> : blog ? 'Update' : 'Create'}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : blog ? tCommon('update') : tCommon('create')}
         </Button>
       </FormActions>
     </form>

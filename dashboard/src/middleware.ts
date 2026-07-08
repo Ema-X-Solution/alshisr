@@ -1,26 +1,33 @@
+import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { routing } from './i18n/routing';
 
-const publicPaths = ['/login'];
+const intlMiddleware = createMiddleware(routing);
 
-export function middleware(request: NextRequest) {
+export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isPublic = publicPaths.some((p) => pathname.startsWith(p));
+
+  const pathnameWithoutLocale = pathname.replace(/^\/(ar|en)/, '') || '/';
+  const isPublic = pathnameWithoutLocale === '/login' || pathnameWithoutLocale.startsWith('/login/');
   const isAuth = request.cookies.get('alshisr_auth')?.value === '1';
 
+  const localeMatch = pathname.match(/^\/(ar|en)/);
+  const locale = localeMatch?.[1] || routing.defaultLocale;
+
   if (!isPublic && !isAuth) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
+    const loginUrl = new URL(`/${locale}/login`, request.url);
+    loginUrl.searchParams.set('redirect', pathnameWithoutLocale);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isPublic && isAuth && pathname === '/login') {
-    return NextResponse.redirect(new URL('/', request.url));
+  if (isPublic && isAuth && pathnameWithoutLocale === '/login') {
+    return NextResponse.redirect(new URL(`/${locale}`, request.url));
   }
 
-  return NextResponse.next();
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|logo_alshisr.png|favicons|api).*)'],
+  matcher: ['/', '/(ar|en)/:path*', '/((?!_next/static|_next/image|favicon.ico|logo_alshisr.png|favicons|api).*)'],
 };

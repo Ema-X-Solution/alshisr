@@ -3,7 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -39,6 +40,8 @@ interface CouponFormProps {
 export function CouponForm({ coupon, onSubmit }: CouponFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const tCommon = useTranslations('common');
+  const tForms = useTranslations('forms');
 
   const { register, handleSubmit, watch, setValue, formState: { isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -60,10 +63,14 @@ export function CouponForm({ coupon, onSubmit }: CouponFormProps) {
   const handleFormSubmit = async (data: FormData) => {
     try {
       await onSubmit(data);
-      toast({ title: coupon ? 'Coupon updated' : 'Coupon created' });
+      toast({
+        title: coupon
+          ? tForms('updated', { item: tForms('itemCoupon') })
+          : tForms('created', { item: tForms('itemCoupon') }),
+      });
       router.push('/coupons');
     } catch {
-      toast({ title: 'Failed to save coupon', variant: 'destructive' });
+      toast({ title: tForms('saveFailed', { item: tForms('itemCoupon') }), variant: 'destructive' });
     }
   };
 
@@ -71,9 +78,9 @@ export function CouponForm({ coupon, onSubmit }: CouponFormProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <FormSection title="Coupon Details">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>Code</Label><Input {...register('code')} className="uppercase" /></div>
+          <div className="space-y-2"><Label>{tForms('code')}</Label><Input {...register('code')} className="uppercase" /></div>
           <div className="space-y-2">
-            <Label>Type</Label>
+            <Label>{tForms('discountType')}</Label>
             <Select value={watch('type')} onValueChange={(v) => setValue('type', v as 'percentage' | 'fixed')}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -82,24 +89,24 @@ export function CouponForm({ coupon, onSubmit }: CouponFormProps) {
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-2"><Label>Value</Label><Input type="number" step="0.01" {...register('value')} /></div>
-          <div className="space-y-2"><Label>Min Order Amount</Label><Input type="number" step="0.01" {...register('minOrderAmount')} /></div>
+          <div className="space-y-2"><Label>{tForms('discountValue')}</Label><Input type="number" step="0.01" {...register('value')} /></div>
+          <div className="space-y-2"><Label>{tForms('minOrder')}</Label><Input type="number" step="0.01" {...register('minOrderAmount')} /></div>
           <div className="space-y-2"><Label>Max Discount</Label><Input type="number" step="0.01" {...register('maxDiscount')} /></div>
-          <div className="space-y-2"><Label>Usage Limit</Label><Input type="number" {...register('usageLimit')} /></div>
-          <div className="space-y-2"><Label>Starts At</Label><Input type="date" {...register('startsAt')} /></div>
-          <div className="space-y-2"><Label>Expires At</Label><Input type="date" {...register('expiresAt')} /></div>
+          <div className="space-y-2"><Label>{tForms('maxUses')}</Label><Input type="number" {...register('usageLimit')} /></div>
+          <div className="space-y-2"><Label>{tForms('startsAt')}</Label><Input type="date" {...register('startsAt')} /></div>
+          <div className="space-y-2"><Label>{tForms('expiresAt')}</Label><Input type="date" {...register('expiresAt')} /></div>
           <div className="flex items-center gap-2 pt-6">
             <Switch checked={watch('isActive')} onCheckedChange={(v) => setValue('isActive', v)} />
-            <Label>Active</Label>
+            <Label>{tCommon('active')}</Label>
           </div>
         </div>
-        <div className="space-y-2"><Label>Description (EN)</Label><Textarea {...register('description')} /></div>
-        <div className="space-y-2"><Label>Description (AR)</Label><Textarea dir="rtl" {...register('descriptionAr')} /></div>
+        <div className="space-y-2"><Label>{tForms('descriptionEn')}</Label><Textarea {...register('description')} /></div>
+        <div className="space-y-2"><Label>{tForms('descriptionAr')}</Label><Textarea dir="rtl" {...register('descriptionAr')} /></div>
       </FormSection>
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <LoadingSpinner size="sm" /> : coupon ? 'Update' : 'Create'}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : coupon ? tCommon('update') : tCommon('create')}
         </Button>
       </FormActions>
     </form>

@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import { BRAND } from '@alshisr/shared';
 import { cn } from '@/lib/utils';
 import { BrandLogo } from '@/components/shared/BrandLogo';
+import { Link, usePathname } from '@/i18n/navigation';
 import {
   HiOutlineHome,
   HiOutlineShoppingBag,
@@ -26,23 +26,23 @@ import {
 } from 'react-icons/hi';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: HiOutlineHome },
-  { href: '/products', label: 'Products', icon: HiOutlineShoppingBag },
-  { href: '/categories', label: 'Categories', icon: HiOutlineTag },
-  { href: '/brands', label: 'Brands', icon: HiOutlineStar },
-  { href: '/orders', label: 'Orders', icon: HiOutlineClipboardList },
-  { href: '/customers', label: 'Customers', icon: HiOutlineUsers },
-  { href: '/users', label: 'Users', icon: HiOutlineUserGroup },
-  { href: '/coupons', label: 'Coupons', icon: HiOutlineTicket },
-  { href: '/banners', label: 'Banners', icon: HiOutlinePhotograph },
-  { href: '/sliders', label: 'Sliders', icon: HiOutlineViewGrid },
-  { href: '/reviews', label: 'Reviews', icon: HiOutlineChatAlt2 },
-  { href: '/blogs', label: 'Blogs', icon: HiOutlineDocumentText },
-  { href: '/pages', label: 'Pages', icon: HiOutlineDocument },
-  { href: '/faq', label: 'FAQ', icon: HiOutlineQuestionMarkCircle },
-  { href: '/contact', label: 'Contact', icon: HiOutlineMail },
-  { href: '/settings', label: 'Settings', icon: HiOutlineCog },
-  { href: '/notifications', label: 'Notifications', icon: HiOutlineBell },
+  { href: '/', labelKey: 'dashboard' as const, icon: HiOutlineHome },
+  { href: '/products', labelKey: 'products' as const, icon: HiOutlineShoppingBag },
+  { href: '/categories', labelKey: 'categories' as const, icon: HiOutlineTag },
+  { href: '/brands', labelKey: 'brands' as const, icon: HiOutlineStar },
+  { href: '/orders', labelKey: 'orders' as const, icon: HiOutlineClipboardList },
+  { href: '/customers', labelKey: 'customers' as const, icon: HiOutlineUsers },
+  { href: '/users', labelKey: 'users' as const, icon: HiOutlineUserGroup },
+  { href: '/coupons', labelKey: 'coupons' as const, icon: HiOutlineTicket },
+  { href: '/banners', labelKey: 'banners' as const, icon: HiOutlinePhotograph },
+  { href: '/sliders', labelKey: 'sliders' as const, icon: HiOutlineViewGrid },
+  { href: '/reviews', labelKey: 'reviews' as const, icon: HiOutlineChatAlt2 },
+  { href: '/blogs', labelKey: 'blogs' as const, icon: HiOutlineDocumentText },
+  { href: '/pages', labelKey: 'pages' as const, icon: HiOutlineDocument },
+  { href: '/faq', labelKey: 'faq' as const, icon: HiOutlineQuestionMarkCircle },
+  { href: '/contact', labelKey: 'contact' as const, icon: HiOutlineMail },
+  { href: '/settings', labelKey: 'settings' as const, icon: HiOutlineCog },
+  { href: '/notifications', labelKey: 'notifications' as const, icon: HiOutlineBell },
 ];
 
 interface SidebarProps {
@@ -52,6 +52,10 @@ interface SidebarProps {
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations('nav');
+  const tCommon = useTranslations('common');
+  const isRtl = locale === 'ar';
 
   return (
     <>
@@ -63,16 +67,19 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       )}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r bg-card transition-transform duration-200 lg:static lg:translate-x-0',
-          open ? 'translate-x-0' : '-translate-x-full',
+          'fixed inset-y-0 z-50 flex w-64 flex-col border-r bg-card transition-transform duration-200 lg:static lg:translate-x-0',
+          isRtl ? 'right-0 border-r-0 border-l' : 'left-0',
+          open ? 'translate-x-0' : isRtl ? 'translate-x-full' : '-translate-x-full',
         )}
       >
         <div className="flex h-16 items-center border-b px-6">
           <Link href="/" className="flex items-center gap-2">
             <BrandLogo priority />
             <div>
-              <p className="font-semibold text-sm leading-tight">{BRAND.name}</p>
-              <p className="text-xs text-muted-foreground">Admin Panel</p>
+              <p className="font-semibold text-sm leading-tight">
+                {isRtl ? BRAND.nameAr || BRAND.name : BRAND.name}
+              </p>
+              <p className="text-xs text-muted-foreground">{tCommon('adminPanel')}</p>
             </div>
           </Link>
         </div>
@@ -97,7 +104,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                     )}
                   >
                     <Icon className="h-5 w-5 shrink-0" />
-                    {item.label}
+                    {t(item.labelKey)}
                   </Link>
                 </li>
               );

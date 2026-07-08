@@ -3,7 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,6 +39,8 @@ interface SliderFormProps {
 export function SliderForm({ slider, onSubmit }: SliderFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const tCommon = useTranslations('common');
+  const tForms = useTranslations('forms');
 
   const { register, handleSubmit, watch, setValue, formState: { isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -59,10 +62,14 @@ export function SliderForm({ slider, onSubmit }: SliderFormProps) {
   const handleFormSubmit = async (data: FormData) => {
     try {
       await onSubmit(data);
-      toast({ title: slider ? 'Slider updated' : 'Slider created' });
+      toast({
+        title: slider
+          ? tForms('updated', { item: tForms('itemSlider') })
+          : tForms('created', { item: tForms('itemSlider') }),
+      });
       router.push('/sliders');
     } catch {
-      toast({ title: 'Failed to save slider', variant: 'destructive' });
+      toast({ title: tForms('saveFailed', { item: tForms('itemSlider') }), variant: 'destructive' });
     }
   };
 
@@ -70,25 +77,25 @@ export function SliderForm({ slider, onSubmit }: SliderFormProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <FormSection title="Slider Details">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>Title (EN)</Label><Input {...register('title')} /></div>
-          <div className="space-y-2"><Label>Title (AR)</Label><Input dir="rtl" {...register('titleAr')} /></div>
-          <div className="space-y-2"><Label>Subtitle (EN)</Label><Input {...register('subtitle')} /></div>
-          <div className="space-y-2"><Label>Subtitle (AR)</Label><Input dir="rtl" {...register('subtitleAr')} /></div>
-          <div className="space-y-2"><Label>Link URL</Label><Input {...register('link')} /></div>
+          <div className="space-y-2"><Label>{tForms('titleEn')}</Label><Input {...register('title')} /></div>
+          <div className="space-y-2"><Label>{tForms('titleAr')}</Label><Input dir="rtl" {...register('titleAr')} /></div>
+          <div className="space-y-2"><Label>{tForms('subtitleEn')}</Label><Input {...register('subtitle')} /></div>
+          <div className="space-y-2"><Label>{tForms('subtitleAr')}</Label><Input dir="rtl" {...register('subtitleAr')} /></div>
+          <div className="space-y-2"><Label>{tForms('link')}</Label><Input {...register('link')} /></div>
           <div className="space-y-2"><Label>Button Text (EN)</Label><Input {...register('buttonText')} /></div>
-          <div className="space-y-2"><Label>Sort Order</Label><Input type="number" {...register('sortOrder')} /></div>
+          <div className="space-y-2"><Label>{tForms('sortOrder')}</Label><Input type="number" {...register('sortOrder')} /></div>
           <div className="flex items-center gap-2 pt-6">
             <Switch checked={watch('isActive')} onCheckedChange={(v) => setValue('isActive', v)} />
-            <Label>Active</Label>
+            <Label>{tCommon('active')}</Label>
           </div>
         </div>
         <ImageUpload value={watch('image')} onChange={(url) => setValue('image', url)} folder="sliders" label="Desktop Image" />
         <ImageUpload value={watch('mobileImage')} onChange={(url) => setValue('mobileImage', url)} folder="sliders" label="Mobile Image" />
       </FormSection>
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <LoadingSpinner size="sm" /> : slider ? 'Update' : 'Create'}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : slider ? tCommon('update') : tCommon('create')}
         </Button>
       </FormActions>
     </form>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
 import {
   LineChart,
   Line,
@@ -17,15 +18,19 @@ interface RevenueChartProps {
 }
 
 export function RevenueChart({ data }: RevenueChartProps) {
+  const t = useTranslations('dashboard');
+  const locale = useLocale();
+  const dateLocale = locale === 'ar' ? 'ar-SA' : 'en-US';
+
   const chartData = data.map((d) => ({
     ...d,
-    date: new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: new Date(d.date).toLocaleDateString(dateLocale, { month: 'short', day: 'numeric' }),
   }));
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Revenue (Last 30 Days)</CardTitle>
+        <CardTitle className="text-base">{t('revenueChart')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">
@@ -35,7 +40,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
               <XAxis dataKey="date" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `${v}`} />
               <Tooltip
-                formatter={(value: number) => [formatCurrency(value), 'Revenue']}
+                formatter={(value: number) => [formatCurrency(value), t('revenue')]}
                 labelStyle={{ color: '#222' }}
               />
               <Line

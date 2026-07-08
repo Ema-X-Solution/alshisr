@@ -3,7 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -36,6 +37,8 @@ interface BrandFormProps {
 export function BrandForm({ brand, onSubmit }: BrandFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const tCommon = useTranslations('common');
+  const tForms = useTranslations('forms');
 
   const { register, handleSubmit, watch, setValue, formState: { isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -54,10 +57,14 @@ export function BrandForm({ brand, onSubmit }: BrandFormProps) {
   const handleFormSubmit = async (data: FormData) => {
     try {
       await onSubmit(data);
-      toast({ title: brand ? 'Brand updated' : 'Brand created' });
+      toast({
+        title: brand
+          ? tForms('updated', { item: tForms('itemBrand') })
+          : tForms('created', { item: tForms('itemBrand') }),
+      });
       router.push('/brands');
     } catch {
-      toast({ title: 'Failed to save brand', variant: 'destructive' });
+      toast({ title: tForms('saveFailed', { item: tForms('itemBrand') }), variant: 'destructive' });
     }
   };
 
@@ -65,23 +72,23 @@ export function BrandForm({ brand, onSubmit }: BrandFormProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <FormSection title="Brand Details">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>Name (EN)</Label><Input {...register('name')} /></div>
-          <div className="space-y-2"><Label>Name (AR)</Label><Input dir="rtl" {...register('nameAr')} /></div>
-          <div className="space-y-2"><Label>Slug</Label><Input {...register('slug')} /></div>
-          <div className="space-y-2"><Label>Sort Order</Label><Input type="number" {...register('sortOrder')} /></div>
+          <div className="space-y-2"><Label>{tForms('nameEn')}</Label><Input {...register('name')} /></div>
+          <div className="space-y-2"><Label>{tForms('nameAr')}</Label><Input dir="rtl" {...register('nameAr')} /></div>
+          <div className="space-y-2"><Label>{tForms('slug')}</Label><Input {...register('slug')} /></div>
+          <div className="space-y-2"><Label>{tForms('sortOrder')}</Label><Input type="number" {...register('sortOrder')} /></div>
           <div className="flex items-center gap-2 pt-6">
             <Switch checked={watch('isActive')} onCheckedChange={(v) => setValue('isActive', v)} />
-            <Label>Active</Label>
+            <Label>{tCommon('active')}</Label>
           </div>
         </div>
         <ImageUpload value={watch('logo')} onChange={(url) => setValue('logo', url)} folder="brands" label="Logo" />
-        <div className="space-y-2"><Label>Description (EN)</Label><Textarea {...register('description')} /></div>
-        <div className="space-y-2"><Label>Description (AR)</Label><Textarea dir="rtl" {...register('descriptionAr')} /></div>
+        <div className="space-y-2"><Label>{tForms('descriptionEn')}</Label><Textarea {...register('description')} /></div>
+        <div className="space-y-2"><Label>{tForms('descriptionAr')}</Label><Textarea dir="rtl" {...register('descriptionAr')} /></div>
       </FormSection>
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <LoadingSpinner size="sm" /> : brand ? 'Update' : 'Create'}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : brand ? tCommon('update') : tCommon('create')}
         </Button>
       </FormActions>
     </form>

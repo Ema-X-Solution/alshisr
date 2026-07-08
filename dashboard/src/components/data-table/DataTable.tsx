@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   useReactTable,
   getCoreRowModel,
@@ -35,12 +36,13 @@ export function DataTable<T>({
   data,
   meta,
   isLoading,
-  searchPlaceholder = 'Search...',
+  searchPlaceholder,
   searchValue = '',
   onSearchChange,
   onPageChange,
   toolbar,
 }: DataTableProps<T>) {
+  const t = useTranslations('common');
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -59,7 +61,7 @@ export function DataTable<T>({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {onSearchChange && (
           <Input
-            placeholder={searchPlaceholder}
+            placeholder={searchPlaceholder || t('search')}
             value={searchValue}
             onChange={(e) => onSearchChange(e.target.value)}
             className="max-w-sm"
@@ -77,7 +79,7 @@ export function DataTable<T>({
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                        className="h-12 px-4 text-start align-middle font-medium text-muted-foreground"
                       >
                         {header.isPlaceholder ? null : (
                           <button
@@ -116,7 +118,7 @@ export function DataTable<T>({
                 ) : data.length === 0 ? (
                   <tr>
                     <td colSpan={columns.length} className="h-32 text-center text-muted-foreground">
-                      No results found
+                      {t('noResults')}
                     </td>
                   </tr>
                 ) : (
@@ -138,8 +140,11 @@ export function DataTable<T>({
       {meta && meta.totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {(meta.page - 1) * meta.limit + 1} to{' '}
-            {Math.min(meta.page * meta.limit, meta.total)} of {meta.total} results
+            {t('showing', {
+              from: (meta.page - 1) * meta.limit + 1,
+              to: Math.min(meta.page * meta.limit, meta.total),
+              total: meta.total,
+            })}
           </p>
           <div className="flex gap-2">
             <Button
@@ -148,7 +153,7 @@ export function DataTable<T>({
               disabled={!meta.hasPrevPage}
               onClick={() => onPageChange?.(meta.page - 1)}
             >
-              Previous
+              {t('previous')}
             </Button>
             <Button
               variant="outline"
@@ -156,7 +161,7 @@ export function DataTable<T>({
               disabled={!meta.hasNextPage}
               onClick={() => onPageChange?.(meta.page + 1)}
             >
-              Next
+              {t('next')}
             </Button>
           </div>
         </div>

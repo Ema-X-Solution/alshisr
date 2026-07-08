@@ -3,7 +3,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -34,6 +35,9 @@ interface UserFormProps {
 export function UserForm({ user, onSubmit }: UserFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const tCommon = useTranslations('common');
+  const tForms = useTranslations('forms');
+  const tStatus = useTranslations('status');
   const isEdit = !!user;
 
   const { register, handleSubmit, watch, setValue, formState: { isSubmitting } } = useForm<FormData>({
@@ -53,10 +57,14 @@ export function UserForm({ user, onSubmit }: UserFormProps) {
     try {
       const payload = { ...data, password: data.password || undefined };
       await onSubmit(payload);
-      toast({ title: isEdit ? 'User updated' : 'User created' });
+      toast({
+        title: isEdit
+          ? tForms('updated', { item: tForms('itemUser') })
+          : tForms('created', { item: tForms('itemUser') }),
+      });
       router.push('/users');
     } catch {
-      toast({ title: 'Failed to save user', variant: 'destructive' });
+      toast({ title: tForms('saveFailed', { item: tForms('itemUser') }), variant: 'destructive' });
     }
   };
 
@@ -64,38 +72,38 @@ export function UserForm({ user, onSubmit }: UserFormProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <FormSection title="User Details">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2"><Label>Email</Label><Input type="email" {...register('email')} disabled={isEdit} /></div>
+          <div className="space-y-2"><Label>{tForms('email')}</Label><Input type="email" {...register('email')} disabled={isEdit} /></div>
           <div className="space-y-2">
-            <Label>Role</Label>
+            <Label>{tForms('role')}</Label>
             <Select value={watch('role')} onValueChange={(v) => setValue('role', v as FormData['role'])}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="SUPER_ADMIN">Super Admin</SelectItem>
-                <SelectItem value="ADMIN">Admin</SelectItem>
-                <SelectItem value="MANAGER">Manager</SelectItem>
-                <SelectItem value="CUSTOMER">Customer</SelectItem>
+                <SelectItem value="SUPER_ADMIN">{tStatus('SUPER_ADMIN')}</SelectItem>
+                <SelectItem value="ADMIN">{tStatus('ADMIN')}</SelectItem>
+                <SelectItem value="MANAGER">{tStatus('MANAGER')}</SelectItem>
+                <SelectItem value="CUSTOMER">{tStatus('CUSTOMER')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-2"><Label>First Name</Label><Input {...register('firstName')} /></div>
-          <div className="space-y-2"><Label>Last Name</Label><Input {...register('lastName')} /></div>
-          <div className="space-y-2"><Label>Phone</Label><Input {...register('phone')} /></div>
+          <div className="space-y-2"><Label>{tForms('firstName')}</Label><Input {...register('firstName')} /></div>
+          <div className="space-y-2"><Label>{tForms('lastName')}</Label><Input {...register('lastName')} /></div>
+          <div className="space-y-2"><Label>{tForms('phone')}</Label><Input {...register('phone')} /></div>
           {!isEdit && (
             <div className="space-y-2">
-              <Label>Password</Label>
+              <Label>{tForms('password')}</Label>
               <Input type="password" {...register('password')} placeholder="Min 8 characters" />
             </div>
           )}
           <div className="flex items-center gap-2 pt-6">
             <Switch checked={watch('isActive')} onCheckedChange={(v) => setValue('isActive', v)} />
-            <Label>Active</Label>
+            <Label>{tCommon('active')}</Label>
           </div>
         </div>
       </FormSection>
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <LoadingSpinner size="sm" /> : isEdit ? 'Update' : 'Create'}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : isEdit ? tCommon('update') : tCommon('create')}
         </Button>
       </FormActions>
     </form>

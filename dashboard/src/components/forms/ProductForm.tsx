@@ -3,7 +3,8 @@
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,6 +70,8 @@ interface ProductFormProps {
 export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const tCommon = useTranslations('common');
+  const tForms = useTranslations('forms');
   const isEdit = !!product;
 
   const { data: categories = [] } = useQuery({
@@ -127,43 +130,50 @@ export function ProductForm({ product }: ProductFormProps) {
       };
       if (isEdit) {
         await productsApi.update(product.id, payload);
-        toast({ title: 'Product updated successfully' });
+        toast({ title: tForms('updated', { item: tForms('itemProduct') }) });
       } else {
         await productsApi.create(payload);
-        toast({ title: 'Product created successfully' });
+        toast({ title: tForms('created', { item: tForms('itemProduct') }) });
       }
       router.push('/products');
     } catch {
-      toast({ title: 'Failed to save product', variant: 'destructive' });
+      toast({ title: tForms('saveFailed', { item: tForms('itemProduct') }), variant: 'destructive' });
     }
+  };
+
+  const switchLabels: Record<'isActive' | 'isFeatured' | 'isBestSeller' | 'hasVariants', string> = {
+    isActive: tCommon('active'),
+    isFeatured: 'Featured',
+    isBestSeller: 'Best Seller',
+    hasVariants: 'Has Variants',
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <FormSection title="Basic Information">
+      <FormSection title={tForms('basicInfo')}>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="name">Name (EN)</Label>
+            <Label htmlFor="name">{tForms('nameEn')}</Label>
             <Input id="name" {...register('name')} />
             {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="nameAr">Name (AR)</Label>
+            <Label htmlFor="nameAr">{tForms('nameAr')}</Label>
             <Input id="nameAr" dir="rtl" {...register('nameAr')} />
             {errors.nameAr && <p className="text-sm text-destructive">{errors.nameAr.message}</p>}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="sku">SKU</Label>
+            <Label htmlFor="sku">{tForms('sku')}</Label>
             <Input id="sku" {...register('sku')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="slug">Slug</Label>
-            <Input id="slug" {...register('slug')} placeholder="auto-generated if empty" />
+            <Label htmlFor="slug">{tForms('slug')}</Label>
+            <Input id="slug" {...register('slug')} placeholder={tForms('slugPlaceholder')} />
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label>Category</Label>
+            <Label>{tForms('category')}</Label>
             <Select value={watch('categoryId')} onValueChange={(v) => setValue('categoryId', v)}>
               <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
               <SelectContent>
@@ -174,7 +184,7 @@ export function ProductForm({ product }: ProductFormProps) {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Brand</Label>
+            <Label>{tForms('brand')}</Label>
             <Select value={watch('brandId') || ''} onValueChange={(v) => setValue('brandId', v)}>
               <SelectTrigger><SelectValue placeholder="Select brand" /></SelectTrigger>
               <SelectContent>
@@ -190,7 +200,7 @@ export function ProductForm({ product }: ProductFormProps) {
           <Textarea id="shortDescription" {...register('shortDescription')} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="description">Description (EN)</Label>
+          <Label htmlFor="description">{tForms('descriptionEn')}</Label>
           <Textarea id="description" rows={4} {...register('description')} />
         </div>
       </FormSection>
@@ -198,11 +208,11 @@ export function ProductForm({ product }: ProductFormProps) {
       <FormSection title="Pricing & Inventory">
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="space-y-2">
-            <Label htmlFor="price">Price (SAR)</Label>
+            <Label htmlFor="price">{tForms('price')}</Label>
             <Input id="price" type="number" step="0.01" {...register('price')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="compareAtPrice">Compare At Price</Label>
+            <Label htmlFor="compareAtPrice">{tForms('comparePrice')}</Label>
             <Input id="compareAtPrice" type="number" step="0.01" {...register('compareAtPrice')} />
           </div>
           <div className="space-y-2">
@@ -210,7 +220,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <Input id="costPrice" type="number" step="0.01" {...register('costPrice')} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="stock">Stock</Label>
+            <Label htmlFor="stock">{tForms('stock')}</Label>
             <Input id="stock" type="number" {...register('stock')} />
           </div>
           <div className="space-y-2">
@@ -226,13 +236,13 @@ export function ProductForm({ product }: ProductFormProps) {
           {(['isActive', 'isFeatured', 'isBestSeller', 'hasVariants'] as const).map((field) => (
             <div key={field} className="flex items-center gap-2">
               <Switch checked={watch(field)} onCheckedChange={(v) => setValue(field, v)} />
-              <Label>{field.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase())}</Label>
+              <Label>{switchLabels[field]}</Label>
             </div>
           ))}
         </div>
       </FormSection>
 
-      <FormSection title="Images">
+      <FormSection title={tForms('images')}>
         {imageFields.map((field, index) => (
           <div key={field.id} className="flex items-start gap-4 border-b pb-4">
             <ImageUpload
@@ -299,16 +309,16 @@ export function ProductForm({ product }: ProductFormProps) {
             <Textarea id="metaDescriptionAr" dir="rtl" {...register('metaDescriptionAr')} />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="tags">Tags (comma separated)</Label>
+            <Label htmlFor="tags">{tForms('tags')}</Label>
             <Input id="tags" {...register('tags')} placeholder="luxury, perfume, gift" />
           </div>
         </div>
       </FormSection>
 
       <FormActions>
-        <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>{tCommon('cancel')}</Button>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <LoadingSpinner size="sm" /> : isEdit ? 'Update Product' : 'Create Product'}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : isEdit ? tCommon('update') : tCommon('create')}
         </Button>
       </FormActions>
     </form>

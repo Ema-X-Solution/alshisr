@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CHART_COLORS } from '@/lib/constants';
@@ -9,15 +10,20 @@ interface OrderStatusChartProps {
 }
 
 export function OrderStatusChart({ data }: OrderStatusChartProps) {
+  const t = useTranslations('dashboard');
+  const tStatus = useTranslations('status');
+
   const chartData = data.map((d) => ({
-    name: d.status.replace(/_/g, ' '),
+    name: tStatus.has(d.status as 'PENDING')
+      ? tStatus(d.status as 'PENDING')
+      : d.status.replace(/_/g, ' '),
     value: d.count,
   }));
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Order Status Distribution</CardTitle>
+        <CardTitle className="text-base">{t('orderStatusChart')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">
