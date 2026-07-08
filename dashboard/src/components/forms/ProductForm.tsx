@@ -127,8 +127,13 @@ export function ProductForm({ product }: ProductFormProps) {
     try {
       const payload = {
         ...data,
+        compareAtPrice: data.compareAtPrice && data.compareAtPrice > 0 ? data.compareAtPrice : null,
         tags: data.tags ? data.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
         brandId: data.brandId || undefined,
+        variants: data.variants?.map((v) => ({
+          ...v,
+          compareAtPrice: v.compareAtPrice && v.compareAtPrice > 0 ? v.compareAtPrice : null,
+        })),
       };
       if (isEdit) {
         await productsApi.update(product.id, payload);

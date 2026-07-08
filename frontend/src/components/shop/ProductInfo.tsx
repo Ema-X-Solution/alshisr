@@ -77,7 +77,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
         <Price amount={price} size="lg" />
-        {compareAtPrice && compareAtPrice > price && (
+        {discount > 0 && compareAtPrice != null && (
           <>
             <ComparePrice amount={compareAtPrice} className="text-lg" />
             <Badge variant="secondary">{t('discount', { percent: discount })}</Badge>

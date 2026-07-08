@@ -19,7 +19,7 @@ export default function OffersPage() {
       const result = await productsApi.getAll({ page, limit: 12, sortBy: 'price', sortOrder: 'asc' });
       return {
         ...result,
-        data: result.data.filter((p) => p.compareAtPrice && p.compareAtPrice > p.price),
+        data: result.data.filter((p) => (p.compareAtPrice ?? 0) > p.price),
       };
     },
   });

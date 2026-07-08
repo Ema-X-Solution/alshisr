@@ -69,7 +69,7 @@ export function ProductCard({ product, index = 0, className }: ProductCardProps)
           </h3>
           <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
             <Price amount={product.price} size="sm" className="sm:text-base" />
-            {product.compareAtPrice && product.compareAtPrice > product.price && (
+            {discount > 0 && product.compareAtPrice != null && (
               <ComparePrice amount={product.compareAtPrice} />
             )}
           </div>
