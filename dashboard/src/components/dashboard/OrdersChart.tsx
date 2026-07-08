@@ -39,7 +39,7 @@ export function OrdersChart({ data }: OrdersChartProps) {
               <XAxis dataKey="date" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
               <Tooltip labelStyle={{ color: '#222' }} />
-              <Bar dataKey="orders" fill="#C8A46B" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="orders" fill="#C8A24A" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

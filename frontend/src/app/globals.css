@@ -9,25 +9,30 @@
 
 @layer base {
   :root {
-    --background: 40 33% 97%;
-    --foreground: 0 0% 13%;
+    --background: 40 39% 95%;
+    --foreground: 0 0% 17%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --card-foreground: 0 0% 17%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
-    --primary: 358 70% 34%;
-    --primary-foreground: 40 33% 97%;
-    --secondary: 38 44% 60%;
-    --secondary-foreground: 0 0% 13%;
-    --muted: 35 25% 93%;
+    --popover-foreground: 0 0% 17%;
+    --primary: 272 50% 34%;
+    --primary-foreground: 40 39% 95%;
+    --secondary: 42 53% 54%;
+    --secondary-foreground: 0 0% 17%;
+    --muted: 40 30% 92%;
     --muted-foreground: 0 0% 40%;
-    --accent: 38 44% 60%;
-    --accent-foreground: 0 0% 13%;
+    --accent: 42 53% 54%;
+    --accent-foreground: 0 0% 17%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 40 33% 97%;
-    --border: 35 20% 88%;
-    --input: 35 20% 88%;
-    --ring: 358 70% 34%;
+    --destructive-foreground: 40 39% 95%;
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 272 50% 34%;
+    --lavender: 269 43% 56%;
+    --saffron: 28 80% 52%;
+    --olive: 87 37% 36%;
+    --sage: 88 36% 65%;
+    --brown: 26 46% 33%;
     --radius: 0.25rem;
   }
 
@@ -50,7 +55,7 @@
   }
 
   .luxury-gradient {
-    background: linear-gradient(135deg, #951a1d 0%, #b82428 50%, #C8A46B 100%);
+    background: linear-gradient(135deg, #5B2C83 0%, #8E5FBF 50%, #C8A24A 100%);
   }
 
   .section-padding {

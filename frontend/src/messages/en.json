@@ -22,7 +22,8 @@
     "required": "Required",
     "optional": "Optional",
     "success": "Success",
-    "close": "Close"
+    "close": "Close",
+    "loginRequired": "Please log in to continue"
   },
   "nav": {
     "home": "Home",

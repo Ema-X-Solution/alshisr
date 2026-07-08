@@ -12,6 +12,7 @@ import { useLocaleField } from '@/lib/hooks/useLocaleField';
 import { useCart } from '@/lib/hooks/useCart';
 import { useWishlist } from '@/lib/hooks/useWishlist';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { useToast } from '@/components/ui/use-toast';
 import { getDiscountPercent, type Product, type ProductVariant } from '@/lib/types';
 import { cn } from '@/lib/utils/cn';
 
@@ -21,9 +22,11 @@ interface ProductInfoProps {
 
 export function ProductInfo({ product }: ProductInfoProps) {
   const t = useTranslations('product');
+  const tCommon = useTranslations('common');
   const { field } = useLocaleField();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   const { addItem, isAdding } = useCart();
   const { isInWishlist, toggle, isToggling } = useWishlist();
   const [quantity, setQuantity] = useState(1);
@@ -42,9 +45,14 @@ export function ProductInfo({ product }: ProductInfoProps) {
     ? Object.keys(product.variants[0].attributes)
     : [];
 
+  const requireAuth = () => {
+    toast({ title: tCommon('loginRequired') });
+    router.push('/login');
+  };
+
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      router.push('/login');
+      requireAuth();
       return;
     }
     await addItem({
@@ -52,6 +60,14 @@ export function ProductInfo({ product }: ProductInfoProps) {
       quantity,
       variantId: selectedVariant?.id,
     });
+  };
+
+  const handleWishlist = async () => {
+    if (!isAuthenticated) {
+      requireAuth();
+      return;
+    }
+    await toggle(product.id);
   };
 
   return (
@@ -142,16 +158,15 @@ export function ProductInfo({ product }: ProductInfoProps) {
         >
           {t('addToCart')}
         </Button>
-        {isAuthenticated && (
-          <Button
-            size="lg"
-            variant="outline"
-            disabled={isToggling}
-            onClick={() => toggle(product.id)}
-          >
-            <FiHeart className={cn('h-5 w-5', inWishlist && 'fill-primary text-primary')} />
-          </Button>
-        )}
+        <Button
+          size="lg"
+          variant="outline"
+          disabled={isToggling}
+          onClick={handleWishlist}
+          aria-label={inWishlist ? t('removeFromWishlist') : t('addToWishlist')}
+        >
+          <FiHeart className={cn('h-5 w-5', inWishlist && 'fill-primary text-primary')} />
+        </Button>
       </div>
 
       <p className="text-sm text-muted-foreground">

@@ -6,10 +6,17 @@ export const BRAND = {
 } as const;
 
 export const COLORS = {
-  primary: '#951a1d',
-  secondary: '#C8A46B',
-  background: '#FAF7F2',
-  text: '#222222',
+  primary: '#5B2C83',
+  secondary: '#C8A24A',
+  lavender: '#8E5FBF',
+  saffron: '#E67E22',
+  olive: '#5F7D3A',
+  sage: '#A8C686',
+  ivory: '#F8F5EF',
+  white: '#FFFFFF',
+  text: '#2C2C2C',
+  brown: '#7A4E2D',
+  background: '#F8F5EF',
 } as const;
 
 export const API_VERSION = 'v1';

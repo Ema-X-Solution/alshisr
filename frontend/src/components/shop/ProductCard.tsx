@@ -1,15 +1,17 @@
 'use client';
 
 import Image from 'next/image';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { FiHeart } from 'react-icons/fi';
+import { FiHeart, FiShoppingBag } from 'react-icons/fi';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Price, ComparePrice } from '@/components/shared/Price';
 import { useLocaleField } from '@/lib/hooks/useLocaleField';
 import { useWishlist } from '@/lib/hooks/useWishlist';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { useCart } from '@/lib/hooks/useCart';
+import { useToast } from '@/components/ui/use-toast';
 import { getDiscountPercent, getProductImage, type Product } from '@/lib/types';
 import { cn } from '@/lib/utils/cn';
 import { motion } from 'framer-motion';
@@ -22,13 +24,55 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0, className }: ProductCardProps) {
   const t = useTranslations('product');
+  const tCommon = useTranslations('common');
+  const router = useRouter();
+  const { toast } = useToast();
   const { field } = useLocaleField();
   const { isAuthenticated } = useAuth();
   const { isInWishlist, toggle, isToggling } = useWishlist();
+  const { addItem, isAdding } = useCart();
   const name = field(product, 'name');
   const image = getProductImage(product);
   const discount = getDiscountPercent(product.price, product.compareAtPrice);
   const inWishlist = isInWishlist(product.id);
+  const outOfStock = product.stock <= 0;
+  const needsVariant = product.hasVariants && (product.variants?.length ?? 0) > 0;
+
+  const requireAuth = () => {
+    toast({ title: tCommon('loginRequired') });
+    router.push('/login');
+  };
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (outOfStock) return;
+
+    if (needsVariant) {
+      router.push(`/shop/${product.slug}`);
+      return;
+    }
+
+    if (!isAuthenticated) {
+      requireAuth();
+      return;
+    }
+
+    await addItem({ productId: product.id, quantity: 1 });
+  };
+
+  const handleWishlist = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      requireAuth();
+      return;
+    }
+
+    await toggle(product.id);
+  };
 
   return (
     <motion.article
@@ -75,21 +119,28 @@ export function ProductCard({ product, index = 0, className }: ProductCardProps)
           </div>
         </div>
       </Link>
-      {isAuthenticated && (
+
+      <div className="mt-2 flex gap-2 sm:mt-3">
         <Button
-          variant="ghost"
-          size="icon"
-          className="absolute end-1 top-1 h-8 w-8 bg-background/80 opacity-100 backdrop-blur sm:end-2 sm:top-2 sm:opacity-0 sm:group-hover:opacity-100"
+          size="sm"
+          className="min-w-0 flex-1"
+          disabled={outOfStock || isAdding}
+          onClick={handleAddToCart}
+        >
+          <FiShoppingBag className="h-4 w-4 shrink-0" />
+          <span className="truncate">{outOfStock ? t('outOfStock') : t('addToCart')}</span>
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          className="shrink-0 px-3"
           disabled={isToggling}
-          onClick={(e) => {
-            e.preventDefault();
-            toggle(product.id);
-          }}
+          onClick={handleWishlist}
           aria-label={inWishlist ? t('removeFromWishlist') : t('addToWishlist')}
         >
           <FiHeart className={cn('h-4 w-4', inWishlist && 'fill-primary text-primary')} />
         </Button>
-      )}
+      </div>
     </motion.article>
   );
 }
