@@ -8,6 +8,8 @@ import { Footer } from '@/components/layout/Footer';
 import { QueryProvider } from '@/providers/QueryProvider';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { Toaster } from '@/components/ui/toaster';
+import { serverFetch } from '@/lib/api/server';
+import { buildThemeStyle } from '@/lib/theme';
 import '../globals.css';
 
 const playfair = Playfair_Display({
@@ -54,6 +56,18 @@ export async function generateMetadata({
   };
 }
 
+async function getPublicColors() {
+  try {
+    const settings = await serverFetch<Record<string, Record<string, unknown>>>(
+      '/settings/public',
+      { next: { revalidate: 60 } },
+    );
+    return settings.colors ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function LocaleLayout({
   children,
   params,
@@ -68,11 +82,12 @@ export default async function LocaleLayout({
   }
 
   setRequestLocale(locale);
-  const messages = await getMessages();
+  const [messages, colors] = await Promise.all([getMessages(), getPublicColors()]);
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
+  const themeStyle = buildThemeStyle(colors);
 
   return (
-    <html lang={locale} dir={dir} suppressHydrationWarning>
+    <html lang={locale} dir={dir} style={themeStyle} suppressHydrationWarning>
       <body className={`${playfair.variable} ${notoArabic.variable} min-h-screen antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>

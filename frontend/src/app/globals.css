@@ -55,7 +55,12 @@
   }
 
   .luxury-gradient {
-    background: linear-gradient(135deg, #5B2C83 0%, #8E5FBF 50%, #C8A24A 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--lavender)) 50%,
+      hsl(var(--secondary)) 100%
+    );
   }
 
   .section-padding {

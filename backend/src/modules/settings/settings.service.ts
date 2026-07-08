@@ -24,7 +24,7 @@ export class SettingsService {
   }
 
   async findPublicSettings() {
-    const publicGroups = ['general', 'store', 'social', 'seo'];
+    const publicGroups = ['general', 'store', 'social', 'seo', 'colors'];
     const settings = await this.prisma.setting.findMany({
       where: { group: { in: publicGroups } },
       orderBy: [{ group: 'asc' }, { key: 'asc' }],

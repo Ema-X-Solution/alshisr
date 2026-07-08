@@ -128,14 +128,16 @@ export function ProductForm({ product }: ProductFormProps) {
 
   const onSubmit = async (data: ProductFormData) => {
     try {
-      const payload = {
+      const payload: Partial<Product> = {
         ...data,
-        compareAtPrice: data.compareAtPrice && data.compareAtPrice > 0 ? data.compareAtPrice : null,
+        compareAtPrice:
+          data.compareAtPrice && data.compareAtPrice > 0 ? data.compareAtPrice : null,
         tags: data.tags ? data.tags.split(',').map((t) => t.trim()).filter(Boolean) : [],
         brandId: data.brandId || undefined,
         variants: data.variants?.map((v) => ({
           ...v,
-          compareAtPrice: v.compareAtPrice && v.compareAtPrice > 0 ? v.compareAtPrice : null,
+          compareAtPrice:
+            v.compareAtPrice && v.compareAtPrice > 0 ? v.compareAtPrice : null,
         })),
       };
       if (isEdit) {
